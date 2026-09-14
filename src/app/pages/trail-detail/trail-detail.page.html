@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" *ngIf="trail() as t">
+<ion-content [fullscreen]="true" *ngIf="trail() as t" class="has-fixed-footer">
   <div class="hero" [style.backgroundImage]="'url(' + t.image + ')'">
     <ion-header class="ion-no-border transparent-header">
       <ion-toolbar>
@@ -14,6 +14,12 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
+    <div class="badge-row">
+      <span class="badge badge-difficulty">{{ t.difficulty }} DIFFICULTY</span>
+      <span class="badge badge-status" *ngIf="t.status">{{ t.status }} STATUS</span>
+    </div>
+
     <div class="hero-gradient"></div>
   </div>
 
@@ -23,43 +29,76 @@
         <h1>{{ t.name }}</h1>
         <p class="region"><ion-icon name="location-outline"></ion-icon> {{ t.region }}</p>
       </div>
-      <div class="rating">
-        <ion-icon name="star"></ion-icon>
-        <span>{{ t.rating }}</span>
-      </div>
     </div>
 
     <div class="stat-grid">
       <div class="stat-box">
-        <ion-icon name="trending-up-outline"></ion-icon>
-        <span class="v">{{ t.elevation }}</span>
-        <span class="l">Elevation</span>
+        <span class="l">Height</span>
+        <span class="v">{{ t.height || t.elevation }}</span>
       </div>
       <div class="stat-box">
-        <ion-icon name="walk-outline"></ion-icon>
-        <span class="v">{{ t.distance }}</span>
-        <span class="l">Distance</span>
-      </div>
-      <div class="stat-box">
-        <ion-icon name="time-outline"></ion-icon>
-        <span class="v">{{ t.duration }}</span>
         <span class="l">Duration</span>
+        <span class="v">{{ t.duration }}</span>
       </div>
       <div class="stat-box">
-        <ion-icon name="ribbon-outline"></ion-icon>
-        <span class="v">{{ t.difficulty }}</span>
-        <span class="l">Difficulty</span>
+        <span class="l">Trail Type</span>
+        <span class="v">{{ t.trailType || '—' }}</span>
       </div>
     </div>
 
-    <p class="section-title">About this trail</p>
+    <p class="section-title">About the Trail</p>
     <p class="description">{{ t.description }}</p>
 
-    <button class="start-btn" (click)="startHike()">Start Hike</button>
-    <button class="save-btn" (click)="toggleSave()">
-      <ion-icon [name]="saved() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
-      {{ saved() ? 'Added to Planner' : 'Add to Planner' }}
-    </button>
+    <ng-container *ngIf="(t.reviews?.length || 0) > 0">
+      <div class="reviews-header">
+        <p class="section-title">Reviews</p>
+        <span class="rating-inline">
+          <ion-icon name="star"></ion-icon>
+          {{ t.rating }} ({{ t.reviewCount || t.reviews.length }} Reviews)
+        </span>
+      </div>
+
+      <div class="review-card" *ngFor="let r of t.reviews.slice(0, 1)">
+        <div class="review-top">
+          <img [src]="r.avatar" class="avatar" />
+          <div class="review-meta">
+            <span class="author">{{ r.author }}</span>
+            <span class="stars">
+              <ion-icon name="star" *ngFor="let s of [1,2,3,4,5]" [class.filled]="s <= r.rating"></ion-icon>
+            </span>
+          </div>
+          <span class="date">{{ r.date }}</span>
+        </div>
+        <p class="review-text">{{ r.text }}</p>
+        <div class="review-photos" *ngIf="r.photos?.length">
+          <img *ngFor="let p of r.photos" [src]="p" />
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="(t.communityStories?.length || 0) > 0">
+      <p class="section-title">Community Stories</p>
+      <div class="stories-scroll">
+        <div
+          class="story-card"
+          *ngFor="let s of t.communityStories"
+          [style.backgroundImage]="'url(' + s.image + ')'"
+        >
+          <div class="story-overlay">
+            <span class="story-title">{{ s.title }}</span>
+            <span class="story-author">Posted by {{ s.author }}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="book-bar" *ngIf="t.price">
+    <div class="price">
+      <span class="l">Starting from</span>
+      <span class="v">₱{{ t.price | number }}</span>
+    </div>
+    <button class="book-btn" (click)="bookAdventure()">BOOK ADVENTURE</button>
   </div>
 </ion-content>
 

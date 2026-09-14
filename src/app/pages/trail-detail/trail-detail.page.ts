@@ -61,9 +61,9 @@ export class TrailDetailPage implements OnInit {
     this.saved.set(true);
   }
 
-  async startHike() {
+  async bookAdventure() {
     const toast = await this.toastCtrl.create({
-      message: 'Hike started! Stay safe on the trails. 🥾',
+      message: 'Adventure booked! Stay safe on the trails. 🥾',
       duration: 2000,
       position: 'top',
       color: 'success',
