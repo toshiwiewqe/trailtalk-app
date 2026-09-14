@@ -1,0 +1,105 @@
+.save-btn {
+  --color: var(--app-green);
+  font-weight: 700;
+}
+
+.page-pad {
+  padding: 8px 16px 0;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--app-green);
+  }
+}
+
+.edit-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--app-green);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--ion-background-color);
+
+  ion-icon {
+    color: #08110a;
+    font-size: 15px;
+  }
+}
+
+.avatar-hint {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--app-green);
+  font-weight: 600;
+}
+
+.group-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--app-text-dim);
+  margin: 0 4px 10px;
+}
+
+.form-card {
+  background: var(--app-card-bg);
+  border-radius: 16px;
+  padding: 4px 14px;
+  margin-bottom: 22px;
+}
+
+.field {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+
+  ion-label {
+    font-size: 11px;
+    color: var(--app-text-dim);
+    margin-bottom: 4px;
+  }
+
+  ion-input, ion-select {
+    --color: var(--app-text);
+    --placeholder-color: var(--app-text-dim);
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+
+  &.invalid {
+    --border-color: var(--ion-color-danger);
+  }
+}
+
+.err {
+  color: var(--ion-color-danger);
+  font-size: 11px;
+  margin: -6px 2px 8px;
+}
+
+.bottom-spacer {
+  height: 30px;
+}

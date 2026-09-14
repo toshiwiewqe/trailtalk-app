@@ -1,0 +1,103 @@
+.trail-card {
+  background: var(--app-card-bg);
+  border-radius: 22px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.trail-image {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.rating-chip {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  border-radius: 20px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+
+  ion-icon {
+    color: #ffd257;
+    font-size: 13px;
+  }
+}
+
+.trail-body {
+  padding: 14px 16px 16px;
+}
+
+h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.region {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--app-text-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  ion-icon { font-size: 13px; }
+}
+
+.trail-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--app-text-dim);
+  margin-bottom: 14px;
+
+  .difficulty {
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 11.5px;
+
+    &.easy { background: rgba(95,217,122,0.18); color: #5FD97A; }
+    &.moderate { background: rgba(255,169,77,0.18); color: #ffa94d; }
+    &.hard { background: rgba(255,91,91,0.18); color: #ff5b5b; }
+  }
+
+  .dot { opacity: 0.5; }
+}
+
+.trail-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .elevation {
+    font-size: 12px;
+    color: var(--app-text-dim);
+  }
+}
+
+.details-btn {
+  --background: var(--app-green);
+  --background-activated: var(--app-green-dark);
+  --color: #08110a;
+  --border-radius: 18px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  height: 32px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}

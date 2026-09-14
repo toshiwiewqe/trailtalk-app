@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Explore Trails</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Search trails or peaks..."
+      [debounce]="150"
+      (ionInput)="onSearch($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [scrollY]="false" class="map-content">
+
+  <div #mapEl class="trail-map"></div>
+
+  @if (showWeatherAlert()) {
+    <div class="weather-alert">
+      <ion-icon name="cloud-outline"></ion-icon>
+      <div class="weather-alert__text">
+        <strong>Weather Alert</strong>
+        <span>Heavy rain expected in {{ weatherAlertHours() }}h</span>
+      </div>
+      <ion-icon name="close" class="weather-alert__close" (click)="dismissWeatherAlert()"></ion-icon>
+    </div>
+  }
+
+  <div class="map-fabs">
+    <button class="map-fab" (click)="toggleBookmark()">
+      <ion-icon name="bookmark-outline"></ion-icon>
+    </button>
+    <button class="map-fab" (click)="centerOnUser()">
+      <ion-icon name="navigate-outline"></ion-icon>
+    </button>
+    <button class="map-fab" (click)="toggleLayers()">
+      <ion-icon name="layers-outline"></ion-icon>
+    </button>
+  </div>
+
+  @if (selectedTrail(); as trail) {
+    <div class="trail-sheet">
+      <div class="trail-sheet__top">
+        <span class="trail-sheet__eyebrow">ACTIVE TRAIL</span>
+        <span class="trail-sheet__badge" [class.hard]="trail.difficulty === 'Hard'">
+          {{ trail.difficulty }}
+        </span>
+      </div>
+
+      <h2 class="trail-sheet__name">{{ trail.name }}</h2>
+
+      <div class="trail-sheet__stats">
+        <div>
+          <span class="label">Distance</span>
+          <span class="value">{{ trail.distance }}</span>
+        </div>
+        <div>
+          <span class="label">Elevation</span>
+          <span class="value">{{ trail.elevation }}</span>
+        </div>
+        <div>
+          <span class="label">Duration</span>
+          <span class="value">{{ trail.duration }}</span>
+        </div>
+      </div>
+
+      <div class="trail-sheet__progress">
+        <div class="bar" style="width: 65%"></div>
+      </div>
+
+      <ion-button expand="block" class="book-btn" (click)="openTrail(trail)">
+        Book Now
+      </ion-button>
+    </div>
+  }
+
+</ion-content>

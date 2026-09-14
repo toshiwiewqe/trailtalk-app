@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true" *ngIf="trail() as t">
+  <div class="hero" [style.backgroundImage]="'url(' + t.image + ')'">
+    <ion-header class="ion-no-border transparent-header">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="round-btn">
+            <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="toggleSave()" class="round-btn">
+            <ion-icon [name]="saved() ? 'heart' : 'heart-outline'" [class.saved]="saved()" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <div class="hero-gradient"></div>
+  </div>
+
+  <div class="sheet">
+    <div class="title-row">
+      <div>
+        <h1>{{ t.name }}</h1>
+        <p class="region"><ion-icon name="location-outline"></ion-icon> {{ t.region }}</p>
+      </div>
+      <div class="rating">
+        <ion-icon name="star"></ion-icon>
+        <span>{{ t.rating }}</span>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <ion-icon name="trending-up-outline"></ion-icon>
+        <span class="v">{{ t.elevation }}</span>
+        <span class="l">Elevation</span>
+      </div>
+      <div class="stat-box">
+        <ion-icon name="walk-outline"></ion-icon>
+        <span class="v">{{ t.distance }}</span>
+        <span class="l">Distance</span>
+      </div>
+      <div class="stat-box">
+        <ion-icon name="time-outline"></ion-icon>
+        <span class="v">{{ t.duration }}</span>
+        <span class="l">Duration</span>
+      </div>
+      <div class="stat-box">
+        <ion-icon name="ribbon-outline"></ion-icon>
+        <span class="v">{{ t.difficulty }}</span>
+        <span class="l">Difficulty</span>
+      </div>
+    </div>
+
+    <p class="section-title">About this trail</p>
+    <p class="description">{{ t.description }}</p>
+
+    <button class="start-btn" (click)="startHike()">Start Hike</button>
+    <button class="save-btn" (click)="toggleSave()">
+      <ion-icon [name]="saved() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
+      {{ saved() ? 'Added to Planner' : 'Add to Planner' }}
+    </button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!trail()">
+  <div class="not-found">
+    <p>Trail not found.</p>
+    <ion-button (click)="goBack()">Go Back</ion-button>
+  </div>
+</ion-content>

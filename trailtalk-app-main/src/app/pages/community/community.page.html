@@ -1,0 +1,96 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-row">
+      <div class="title-block">
+        <h1>TrailTalk</h1>
+        <span class="subtitle">Join the adventure</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" (click)="goNotifications()">
+          <ion-icon name="notifications-outline"></ion-icon>
+          <ion-badge *ngIf="notificationService.unreadCount() > 0" class="badge-dot">{{ notificationService.unreadCount() }}</ion-badge>
+        </button>
+        <button class="join-btn" (click)="openComposer()">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad">
+    <app-post-card
+      *ngFor="let post of postService.posts()"
+      [post]="post"
+      (like)="onLike($event)"
+      (comment)="openComments($event)"
+      (share)="onShare($event)"
+    ></app-post-card>
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>
+
+<!-- Composer Modal -->
+<ion-modal [isOpen]="showComposer" (didDismiss)="cancelComposer()">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <div class="modal-header">
+          <button class="text-btn" (click)="cancelComposer()">Cancel</button>
+          <span class="modal-title">New Post</span>
+          <button class="text-btn primary" (click)="publishPost()">Post</button>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-textarea
+        [(ngModel)]="newPostText"
+        placeholder="Share something with the trail community..."
+        auto-grow="true"
+        rows="4"
+        class="composer-textarea"
+      ></ion-textarea>
+      <ion-input
+        [(ngModel)]="newPostImage"
+        placeholder="Paste an image URL (optional)"
+        class="composer-input"
+      ></ion-input>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Comments Modal -->
+<ion-modal [isOpen]="showComments" (didDismiss)="showComments = false" [breakpoints]="[0, 0.6, 0.9]" [initialBreakpoint]="0.6">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <div class="modal-header">
+          <span class="modal-title">Comments</span>
+          <button class="text-btn" (click)="showComments = false">Close</button>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <div class="comment-list" *ngIf="activePost">
+        <div class="comment" *ngFor="let c of activePost.comments">
+          <img [src]="c.avatar" />
+          <div class="comment-body">
+            <span class="c-author">{{ c.author }}</span>
+            <p>{{ c.text }}</p>
+            <span class="c-time">{{ c.timeAgo }}</span>
+          </div>
+        </div>
+        <p *ngIf="!activePost.comments.length" class="no-comments">No comments yet. Be the first!</p>
+      </div>
+    </ion-content>
+    <ion-toolbar class="comment-input-bar">
+      <div class="comment-input-row">
+        <ion-input [(ngModel)]="newComment" placeholder="Add a comment..." (keyup.enter)="submitComment()"></ion-input>
+        <button class="send-btn" (click)="submitComment()">
+          <ion-icon name="send-outline"></ion-icon>
+        </button>
+      </div>
+    </ion-toolbar>
+  </ng-template>
+</ion-modal>

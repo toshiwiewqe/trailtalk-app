@@ -1,0 +1,24 @@
+<div class="trail-card" (click)="onTap()">
+  <div class="trail-image" [style.backgroundImage]="'url(' + trail.image + ')'">
+    <div class="rating-chip">
+      <ion-icon name="star"></ion-icon>
+      <span>{{ trail.rating }}</span>
+    </div>
+  </div>
+  <div class="trail-body">
+    <h3>{{ trail.name }}</h3>
+    <p class="region">
+      <ion-icon name="location-outline"></ion-icon>
+      {{ trail.region }}
+    </p>
+    <div class="trail-meta">
+      <span class="difficulty" [ngClass]="trail.difficulty.toLowerCase()">{{ trail.difficulty }}</span>
+      <span class="dot">&bull;</span>
+      <span>{{ trail.distance }}</span>
+    </div>
+    <div class="trail-footer">
+      <span class="elevation">{{ trail.elevation }} elev.</span>
+      <ion-button size="small" class="details-btn" (click)="onDetails($event)">DETAILS</ion-button>
+    </div>
+  </div>
+</div>

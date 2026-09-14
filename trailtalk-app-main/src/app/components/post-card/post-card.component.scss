@@ -1,0 +1,122 @@
+.post-card {
+  background: var(--app-card-bg);
+  border-radius: 18px;
+  padding: 14px 14px 10px;
+  margin-bottom: 14px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .who {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--app-text);
+  }
+
+  .pro-badge {
+    --background: var(--app-green);
+    --color: #08110a;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+  }
+
+  .handle {
+    font-size: 12px;
+    color: var(--app-text-dim);
+  }
+
+  .more-icon {
+    color: var(--app-text-dim);
+    font-size: 18px;
+  }
+}
+
+.content {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--app-text);
+  margin: 0 0 8px;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  .tag {
+    color: var(--app-green);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+}
+
+.media {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 8px;
+
+  &.two-up {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 6px 2px 4px;
+  border-top: 1px solid var(--app-border);
+  padding-top: 10px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--app-text-dim);
+  font-size: 13px;
+  padding: 0;
+
+  ion-icon {
+    font-size: 19px;
+  }
+
+  .liked {
+    color: var(--ion-color-danger);
+  }
+}

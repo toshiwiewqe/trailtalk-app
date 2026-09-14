@@ -1,0 +1,40 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Planner</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addRandomTrail()">
+        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad">
+    <p class="section-title">Upcoming Adventures</p>
+
+    <ng-container *ngIf="userService.upcoming().length; else empty">
+      <div class="plan-card" *ngFor="let adv of userService.upcoming()" (click)="openTrail(adv)">
+        <img [src]="adv.image" />
+        <div class="plan-body">
+          <span class="plan-name">{{ adv.name }}</span>
+          <span class="plan-date"><ion-icon name="calendar-outline"></ion-icon> {{ adv.date }}</span>
+          <span class="plan-duration"><ion-icon name="time-outline"></ion-icon> {{ adv.duration }}</span>
+        </div>
+        <button class="remove-btn" (click)="removeAdventure(adv, $event)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="empty-state">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <p>No planned adventures yet.</p>
+        <button class="add-btn" (click)="addRandomTrail()">Plan a Hike</button>
+      </div>
+    </ng-template>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>
