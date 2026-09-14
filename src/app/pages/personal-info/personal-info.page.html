@@ -1,0 +1,83 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Personal Info</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" class="save-btn">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad" *ngIf="form">
+
+    <div class="avatar-section">
+      <div class="avatar-wrap" (click)="triggerFileInput()">
+        <img [src]="avatarPreview" />
+        <div class="edit-badge">
+          <ion-icon name="camera-outline"></ion-icon>
+        </div>
+      </div>
+      <span class="avatar-hint">Change Profile Picture</span>
+      <input id="avatarFileInput" type="file" accept="image/*" hidden (change)="onAvatarFileChange($event)" />
+    </div>
+
+    <form [formGroup]="form">
+      <p class="group-label">Personal Information</p>
+      <div class="form-card">
+        <ion-item lines="full" class="field" [class.invalid]="isInvalid('name')">
+          <ion-label position="stacked">Full Name</ion-label>
+          <ion-input formControlName="name" placeholder="Full name"></ion-input>
+        </ion-item>
+        <p class="err" *ngIf="isInvalid('name')">Name is required.</p>
+
+        <ion-item lines="full" class="field" [class.invalid]="isInvalid('email')">
+          <ion-label position="stacked">Email Address</ion-label>
+          <ion-input formControlName="email" type="email" placeholder="you@example.com"></ion-input>
+        </ion-item>
+        <p class="err" *ngIf="isInvalid('email')">Enter a valid email address.</p>
+
+        <ion-item lines="full" class="field" [class.invalid]="isInvalid('phone')">
+          <ion-label position="stacked">Phone Number</ion-label>
+          <ion-input formControlName="phone" type="tel" placeholder="+63 900 000 0000"></ion-input>
+        </ion-item>
+        <p class="err" *ngIf="isInvalid('phone')">Phone number is required.</p>
+
+        <ion-item lines="full" class="field" [class.invalid]="isInvalid('dob')">
+          <ion-label position="stacked">Date of Birth</ion-label>
+          <ion-input formControlName="dob" type="date"></ion-input>
+        </ion-item>
+        <p class="err" *ngIf="isInvalid('dob')">Date of birth is required.</p>
+
+        <ion-item lines="none" class="field">
+          <ion-label position="stacked">Gender</ion-label>
+          <ion-select formControlName="gender" interface="action-sheet" placeholder="Select gender">
+            <ion-select-option value="Male">Male</ion-select-option>
+            <ion-select-option value="Female">Female</ion-select-option>
+            <ion-select-option value="Other">Other</ion-select-option>
+            <ion-select-option value="Prefer not to say">Prefer not to say</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <p class="group-label">Emergency Contact</p>
+      <div class="form-card">
+        <ion-item lines="full" class="field">
+          <ion-label position="stacked">Contact Name</ion-label>
+          <ion-input formControlName="emergencyContactName" placeholder="Full name"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="field">
+          <ion-label position="stacked">Contact Phone</ion-label>
+          <ion-input formControlName="emergencyContactPhone" type="tel" placeholder="+63 900 000 0000"></ion-input>
+        </ion-item>
+      </div>
+    </form>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>

@@ -1,0 +1,85 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-row">
+      <ion-searchbar
+        placeholder="Search trails, peaks, or regions..."
+        [debounce]="150"
+        (ionInput)="onSearch($event)"
+        show-clear-button="focus"
+      ></ion-searchbar>
+      <button class="bell-btn" (click)="goNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-badge *ngIf="notificationService.unreadCount() > 0" class="bell-badge">{{ notificationService.unreadCount() }}</ion-badge>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad">
+
+    <!-- Weather Alert -->
+    <div class="weather-card" (click)="onWeatherTap()">
+      <div class="weather-left">
+        <ion-icon name="partly-sunny-outline"></ion-icon>
+        <div>
+          <h4>{{ weatherService.current().condition }}</h4>
+          <p>{{ weatherService.current().message }}</p>
+        </div>
+      </div>
+      <div class="weather-temp">{{ weatherService.current().temp }}&deg;C</div>
+    </div>
+
+    <!-- Category chips -->
+    <div class="chip-row scroll-x">
+      <ion-chip
+        *ngFor="let cat of categories"
+        [class.active]="activeCategory() === cat"
+        (click)="selectCategory(cat)"
+      >
+        <ion-label>{{ cat }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <!-- Top Suggestions -->
+    <div class="section-header">
+      <span class="section-title">Top Suggestions</span>
+      <span class="view-all-link">View all</span>
+    </div>
+
+    <ng-container *ngIf="filteredTrails().length; else noResults">
+      <app-trail-card
+        *ngFor="let trail of filteredTrails()"
+        [trail]="trail"
+        (details)="openTrail($event)"
+        (cardTap)="openTrail($event)"
+      ></app-trail-card>
+    </ng-container>
+    <ng-template #noResults>
+      <div class="empty-state">
+        <ion-icon name="compass-outline"></ion-icon>
+        <p>No trails match "{{ searchTerm() }}"</p>
+      </div>
+    </ng-template>
+
+    <!-- Community posts preview -->
+    <div class="section-header">
+      <span class="section-title">Community Posts</span>
+      <span class="view-all-link" (click)="goCommunity()">TrailTalk Official</span>
+    </div>
+
+    <div class="community-preview scroll-x" (click)="goCommunity()">
+      <div class="mini-post" *ngFor="let post of latestPosts()">
+        <img *ngIf="post.images.length; else avatarOnly" [src]="post.images[0]" />
+        <ng-template #avatarOnly>
+          <img [src]="post.avatar" />
+        </ng-template>
+        <div class="mini-post-overlay">
+          <span>{{ post.author }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>

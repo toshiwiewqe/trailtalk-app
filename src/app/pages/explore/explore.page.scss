@@ -1,0 +1,38 @@
+ion-searchbar {
+  --background: var(--app-card-bg);
+  --border-radius: 16px;
+  --box-shadow: none;
+  --placeholder-color: var(--app-text-dim);
+  --icon-color: var(--app-text-dim);
+  --color: var(--app-text);
+}
+
+.page-pad {
+  padding: 12px 16px 0;
+}
+
+.difficulty-seg {
+  --background: var(--app-card-bg);
+  border-radius: 14px;
+  margin-bottom: 16px;
+
+  ion-segment-button {
+    --color: var(--app-text-dim);
+    --color-checked: #08110a;
+    --indicator-color: var(--app-green);
+    font-weight: 600;
+    font-size: 12.5px;
+    min-height: 36px;
+    text-transform: none;
+  }
+}
+
+.result-count {
+  color: var(--app-text-dim);
+  font-size: 12.5px;
+  margin: 0 0 12px;
+}
+
+.bottom-spacer {
+  height: 24px;
+}

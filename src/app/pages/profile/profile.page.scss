@@ -1,0 +1,220 @@
+.page-pad {
+  padding: 4px 16px 0;
+}
+
+.profile-head {
+  text-align: center;
+  padding: 8px 0 20px;
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 12px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--app-green);
+  }
+}
+
+.verified-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: var(--ion-background-color);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    color: var(--app-green);
+    font-size: 20px;
+  }
+}
+
+h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--app-text);
+}
+
+.location {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--app-text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  ion-icon { font-size: 13px; }
+}
+
+.bio {
+  margin: 0 auto;
+  max-width: 300px;
+  font-size: 12.5px;
+  color: var(--app-text-dim);
+  line-height: 1.5;
+}
+
+.stats-row {
+  display: flex;
+  background: var(--app-card-bg);
+  border-radius: 18px;
+  padding: 16px 0;
+  margin-bottom: 24px;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--app-border);
+
+  &:last-child { border-right: none; }
+
+  .value {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--app-text);
+  }
+
+  .label {
+    font-size: 10.5px;
+    color: var(--app-text-dim);
+    margin-top: 2px;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  &.account-header {
+    margin-top: 8px;
+  }
+}
+
+.adventure-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--app-card-bg);
+  border-radius: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  img {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  ion-icon {
+    color: var(--app-text-dim);
+    font-size: 16px;
+  }
+}
+
+.adventure-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.adventure-name {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--app-text);
+}
+
+.adventure-date {
+  font-size: 11.5px;
+  color: var(--app-green);
+  margin-top: 2px;
+}
+
+.account-list {
+  background: var(--app-card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--app-border);
+  cursor: pointer;
+
+  &:last-child { border-bottom: none; }
+
+  > ion-icon:first-child {
+    font-size: 18px;
+    color: var(--app-green);
+  }
+
+  span {
+    flex: 1;
+    font-size: 13.5px;
+    color: var(--app-text);
+    font-weight: 500;
+  }
+
+  .pill {
+    flex: none;
+    background: var(--app-green);
+    color: #08110a;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+
+  .chevron {
+    flex: none;
+    font-size: 15px;
+    color: var(--app-text-dim);
+  }
+}
+
+.signout-btn {
+  width: 100%;
+  background: rgba(255,91,91,0.1);
+  border: 1px solid rgba(255,91,91,0.3);
+  color: var(--ion-color-danger);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  ion-icon { font-size: 18px; }
+}
+
+.bottom-spacer {
+  height: 24px;
+}

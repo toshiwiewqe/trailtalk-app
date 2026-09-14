@@ -1,0 +1,58 @@
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+@import "@ionic/angular/css/palettes/dark.always.css";
+
+* {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+ion-content {
+  --background: var(--app-bg);
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.view-all-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+}
+
+.scroll-x {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 12px;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.pill-btn {
+  --border-radius: 20px;
+  --box-shadow: none;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 13px;
+}
+
+.card-surface {
+  background: var(--app-card-bg);
+  border-radius: 20px;
+}
+
+ion-item {
+  --background: transparent;
+}

@@ -1,0 +1,91 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goPersonalInfo()">
+        <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad">
+
+    <div class="profile-head">
+      <div class="avatar-wrap">
+        <img [src]="userService.profile().avatar" />
+        <div class="verified-dot">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+      </div>
+      <h2>{{ userService.profile().name }}</h2>
+      <p class="location"><ion-icon name="location-outline"></ion-icon> {{ userService.profile().location }}</p>
+      <p class="bio">{{ userService.profile().bio }}</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="value">{{ userService.profile().totalHikes }}</span>
+        <span class="label">Total Hikes</span>
+      </div>
+      <div class="stat">
+        <span class="value">{{ userService.profile().totalDistanceKm }}k</span>
+        <span class="label">Total Dist.</span>
+      </div>
+      <div class="stat">
+        <span class="value">{{ userService.profile().highestPeakM }}m</span>
+        <span class="label">Highest Peak</span>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <span class="section-title">Upcoming Adventures</span>
+      <span class="view-all-link" (click)="goPlanner()">View All</span>
+    </div>
+
+    <div class="adventure-item" *ngFor="let adv of userService.upcoming()" (click)="openAdventure(adv)">
+      <img [src]="adv.image" />
+      <div class="adventure-body">
+        <span class="adventure-name">{{ adv.name }}</span>
+        <span class="adventure-date">{{ adv.date }} &bull; {{ adv.duration }}</span>
+      </div>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </div>
+
+    <div class="section-header account-header">
+      <span class="section-title">Account</span>
+    </div>
+
+    <div class="account-list">
+      <div class="account-item" (click)="goPersonalInfo()">
+        <ion-icon name="person-outline"></ion-icon>
+        <span>Personal Information</span>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </div>
+      <div class="account-item" (click)="goNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span>Notifications</span>
+        <span class="pill" *ngIf="notificationService.unreadCount() > 0">{{ notificationService.unreadCount() }} New</span>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </div>
+      <div class="account-item" (click)="showComingSoon('Privacy & Security')">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Privacy &amp; Security</span>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </div>
+      <div class="account-item" (click)="showComingSoon('Help Center')">
+        <ion-icon name="help-circle-outline"></ion-icon>
+        <span>Help Center</span>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </div>
+    </div>
+
+    <button class="signout-btn" (click)="confirmSignOut()">
+      <ion-icon name="log-out-outline"></ion-icon>
+      Sign Out
+    </button>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>
