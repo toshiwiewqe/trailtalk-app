@@ -1,0 +1,169 @@
+.header-row {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  gap: 8px;
+}
+
+ion-searchbar {
+  --background: var(--app-card-bg);
+  --border-radius: 16px;
+  --box-shadow: none;
+  --placeholder-color: var(--app-text-dim);
+  --icon-color: var(--app-text-dim);
+  --color: var(--app-text);
+  padding: 0;
+  flex: 1;
+}
+
+.bell-btn {
+  position: relative;
+  background: var(--app-card-bg);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--app-text);
+  }
+}
+
+.bell-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  --background: var(--ion-color-danger);
+  font-size: 9px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0;
+}
+
+.page-pad {
+  padding: 4px 16px 0;
+}
+
+.weather-card {
+  background: linear-gradient(135deg, #1e2a1e, #182118);
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  cursor: pointer;
+
+  .weather-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    ion-icon {
+      font-size: 30px;
+      color: #ffd257;
+    }
+
+    h4 {
+      margin: 0;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--app-text);
+    }
+
+    p {
+      margin: 2px 0 0;
+      font-size: 11.5px;
+      color: var(--app-text-dim);
+      max-width: 190px;
+    }
+  }
+
+  .weather-temp {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--app-text);
+  }
+}
+
+.chip-row {
+  margin-bottom: 20px;
+  padding-bottom: 2px;
+
+  ion-chip {
+    --background: var(--app-card-bg);
+    color: var(--app-text-dim);
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0;
+
+    &.active {
+      --background: var(--app-green);
+      color: #08110a;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--app-text-dim);
+
+  ion-icon {
+    font-size: 34px;
+    margin-bottom: 8px;
+  }
+
+  p { margin: 0; font-size: 13.5px; }
+}
+
+.community-preview {
+  margin-bottom: 12px;
+
+  .mini-post {
+    position: relative;
+    min-width: 140px;
+    height: 100px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .mini-post-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    padding: 6px 8px;
+
+    span {
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+    }
+  }
+}
+
+.bottom-spacer {
+  height: 24px;
+}

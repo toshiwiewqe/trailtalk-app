@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-wrap">
+    <div class="brand">
+      <ion-icon name="leaf"></ion-icon>
+      <h1>TrailTalk</h1>
+      <p>Your trail community awaits</p>
+    </div>
+
+    <div class="form-block">
+      <ion-input
+        [(ngModel)]="email"
+        type="email"
+        placeholder="Email address"
+        class="login-input"
+        fill="outline"
+      ></ion-input>
+      <ion-input
+        [(ngModel)]="password"
+        type="password"
+        placeholder="Password"
+        class="login-input"
+        fill="outline"
+      ></ion-input>
+
+      <button class="signin-btn" (click)="signIn()">Sign In</button>
+      <p class="hint">You've been signed out. Sign in to continue exploring trails.</p>
+    </div>
+  </div>
+</ion-content>

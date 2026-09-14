@@ -1,0 +1,39 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="markAllRead()" fill="clear" class="mark-btn">Mark all</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <p class="subtitle">Stay updated with your trail community</p>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page-pad">
+    <div
+      class="notif-card"
+      *ngFor="let n of notificationService.notifications()"
+      [class.unread]="!n.read"
+      (click)="onTapNotification(n)"
+    >
+      <div class="notif-icon" [style.background]="n.iconColor + '26'">
+        <ion-icon [name]="n.icon" [style.color]="n.iconColor"></ion-icon>
+      </div>
+      <div class="notif-body">
+        <div class="notif-title-row">
+          <span class="notif-title">{{ n.title }}</span>
+          <span class="notif-time">{{ n.time }}</span>
+        </div>
+        <p class="notif-message">{{ n.message }}</p>
+      </div>
+      <span class="unread-dot" *ngIf="!n.read"></span>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</ion-content>
