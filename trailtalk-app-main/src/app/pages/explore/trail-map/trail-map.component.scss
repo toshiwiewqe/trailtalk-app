@@ -1,0 +1,71 @@
+/* Styles for TrailMapComponent.
+ *
+ * This component uses ViewEncapsulation.None, so everything here is GLOBAL.
+ * Every selector is therefore either Leaflet's own (.leaflet-*) or prefixed
+ * with `trailmap` — nothing here can collide with a teammate's styles.
+ *
+ * Note: leaflet.css itself is NOT imported here. Sass turns `@import` of a
+ * .css file into a runtime `@import url(...)`, which fails in the bundle.
+ * It goes in angular.json instead — see the setup steps.
+ */
+
+/* Fills ion-content, and — critically — creates its own stacking context.
+ *
+ * Leaflet gives its internal panes z-index values from 400 upward. Without a
+ * stacking context here, those compete directly with the page's own layers and
+ * the map paints over the trail sheet, the FABs and the weather banner. The
+ * `z-index: 0` on a positioned element contains all of Leaflet's z-indexes
+ * beneath this element's single level, so the page's own z-index scale works
+ * again. */
+app-trail-map {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.trailmap__host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--app-card-bg, #121a14);
+}
+
+/* Leaflet builds these nodes itself, outside the Angular view. */
+.trailmap-marker {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--app-green, #5fd97a);
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  transition: width 0.15s ease, height 0.15s ease;
+
+  &--closed {
+    background: #ff5b5b;
+  }
+
+  &--selected {
+    width: 34px;
+    height: 34px;
+    margin: -4px 0 0 -4px;
+    border-color: #ffffff;
+  }
+}
+
+/* Both CARTO and Esri require their attribution to stay visible, and the text
+ * changes when the basemap does. Restyle it, never hide it. The max-width lets
+ * Esri's longer credit wrap instead of stretching across the whole map. */
+.leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: var(--app-text-dim, #8a9a8e) !important;
+  font-size: 9px !important;
+  max-width: 72vw;
+  line-height: 1.3;
+
+  a {
+    color: var(--app-green, #5fd97a) !important;
+  }
+}

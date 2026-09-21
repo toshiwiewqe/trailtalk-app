@@ -1,23 +1,45 @@
+ion-searchbar {
+  --background: var(--app-card-bg);
+  --border-radius: 16px;
+  --box-shadow: none;
+  --placeholder-color: var(--app-text-dim);
+  --icon-color: var(--app-text-dim);
+  --color: var(--app-text);
+}
+
+.difficulty-seg {
+  --background: var(--app-card-bg);
+  border-radius: 14px;
+  margin: 0 12px 8px;
+
+  ion-segment-button {
+    --color: var(--app-text-dim);
+    --color-checked: #08110a;
+    --indicator-color: var(--app-green);
+    font-weight: 600;
+    font-size: 12.5px;
+    min-height: 34px;
+    text-transform: none;
+  }
+}
+
 .map-content {
   --background: transparent;
   position: relative;
 }
 
-.trail-map {
+/* app-trail-map positions itself absolutely; this only sits above it. */
+.map-scrim {
   position: absolute;
   inset: 0;
-  height: 100%;
-  min-height: 100%;
-  width: 100%;
-  z-index: 0;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgba(8, 17, 10, 0.35) 0%, rgba(8, 17, 10, 0) 30%, rgba(8, 17, 10, 0.55) 100%);
-  }
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 17, 10, 0.35) 0%,
+    rgba(8, 17, 10, 0) 30%,
+    rgba(8, 17, 10, 0.55) 100%
+  );
 }
 
 .weather-alert {
@@ -35,8 +57,9 @@
   color: #241a02;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 
-  ion-icon:first-child {
+  > ion-icon:first-child {
     font-size: 18px;
+    flex-shrink: 0;
   }
 
   &__text {
@@ -44,23 +67,62 @@
     display: flex;
     flex-direction: column;
     line-height: 1.25;
-    font-size: 12.5px;
+    font-size: 12px;
+    min-width: 0;
 
     strong {
       font-size: 13px;
     }
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  &__temp {
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
   }
 
   &__close {
     font-size: 16px;
     opacity: 0.7;
+    flex-shrink: 0;
+  }
+}
+
+.map-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 24px;
+  border-radius: 16px;
+  background: rgba(8, 17, 10, 0.75);
+  backdrop-filter: blur(6px);
+  color: var(--app-text-dim);
+  font-size: 13px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 26px;
   }
 }
 
 .map-fabs {
   position: absolute;
   right: 12px;
-  top: 90px;
+  top: 76px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -68,6 +130,7 @@
 }
 
 .map-fab {
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 12px;
@@ -82,6 +145,140 @@
   ion-icon {
     font-size: 18px;
   }
+
+  &.active {
+    background: var(--app-green);
+    color: #08110a;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--app-green);
+    color: #08110a;
+    font-size: 10.5px;
+    font-weight: 800;
+    line-height: 18px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.saved-panel {
+  position: absolute;
+  top: 76px;
+  right: 60px;
+  z-index: 7;
+  width: 232px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 16px;
+  background: var(--app-card-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 0 2px;
+
+    strong {
+      font-size: 12.5px;
+      color: var(--app-text);
+    }
+
+    ion-icon {
+      font-size: 15px;
+      color: var(--app-text-dim);
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 10px;
+    text-align: center;
+    color: var(--app-text-dim);
+    font-size: 11.5px;
+    line-height: 1.4;
+
+    ion-icon {
+      font-size: 22px;
+      opacity: 0.6;
+    }
+  }
+}
+
+.saved-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--app-green);
+    flex-shrink: 0;
+
+    &.closed {
+      background: #ff5b5b;
+    }
+  }
+
+  &__text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--app-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    span {
+      font-size: 10.5px;
+      color: var(--app-text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__remove {
+    font-size: 14px;
+    color: var(--app-text-dim);
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
 }
 
 .trail-sheet {
@@ -89,23 +286,48 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 5;
-  padding: 16px 18px 22px;
+  z-index: 6;
+  padding: 16px 18px calc(22px + env(safe-area-inset-bottom, 0px));
   border-radius: 20px 20px 0 0;
   background: var(--app-card-bg);
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
+  animation: sheet-up 0.22s ease-out;
+
+  &__actions {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    display: flex;
+    gap: 6px;
+  }
 
   &__top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
     margin-bottom: 6px;
+    padding-right: 100px;
   }
 
   &__eyebrow {
     font-size: 11px;
     color: var(--app-text-dim);
     letter-spacing: 0.3px;
+    flex: 1;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--app-text);
+
+    ion-icon {
+      font-size: 12px;
+      color: #ffd257;
+    }
   }
 
   &__badge {
@@ -116,23 +338,34 @@
     background: rgba(255, 255, 255, 0.08);
     color: var(--app-text-dim);
 
-    &.hard {
-      background: rgba(220, 60, 60, 0.18);
-      color: #ff6b6b;
-    }
+    &.easy     { background: rgba(95, 217, 122, 0.18); color: #5FD97A; }
+    &.moderate { background: rgba(255, 169, 77, 0.18); color: #ffa94d; }
+    &.hard     { background: rgba(255, 91, 91, 0.18);  color: #ff5b5b; }
+    &.closed   { background: rgba(220, 60, 60, 0.25);  color: #ff6b6b; }
   }
 
   &__name {
-    margin: 0 0 12px;
+    margin: 0 0 2px;
     font-size: 19px;
     font-weight: 700;
     color: var(--app-text);
   }
 
+  &__region {
+    margin: 0 0 14px;
+    font-size: 12px;
+    color: var(--app-text-dim);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    ion-icon { font-size: 13px; }
+  }
+
   &__stats {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 
     .label {
       display: block;
@@ -149,54 +382,170 @@
     }
   }
 
-  &__progress {
-    height: 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.08);
-    margin-bottom: 16px;
-    overflow: hidden;
+  &__footer {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+  }
 
-    .bar {
-      height: 100%;
-      background: var(--app-green);
-      border-radius: 4px;
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+
+    .label {
+      font-size: 9.5px;
+      color: var(--app-text-dim);
+    }
+
+    .value {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--app-text);
+
+      ion-icon {
+        font-size: 14px;
+        color: #ffd257;
+      }
     }
   }
 }
 
-.book-btn {
-  --background: var(--app-green);
-  --color: #08110a;
-  --border-radius: 14px;
-  font-weight: 700;
-  margin: 0;
-}
+/* Photo banner. Replaces the old video row rather than sitting alongside it —
+ * the sheet is already tall on a 667px screen, and the photo carries the same
+ * "there is a preview here" affordance the video row did. */
+.trail-photo {
+  position: relative;
+  height: 108px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
 
-::ng-deep {
-  .trail-marker {
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Keeps the play button and credit readable over a bright photo. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+    pointer-events: none;
+  }
+
+  &__none {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--app-green);
-    border: 3px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--app-text-dim);
 
-    &.closed {
-      background: #dc3c3c;
-    }
-
-    &.selected {
-      width: 32px;
-      height: 32px;
+    ion-icon {
+      font-size: 14px;
     }
   }
 
-  .leaflet-control-attribution {
-    background: rgba(0, 0, 0, 0.5) !important;
-    color: var(--app-text-dim) !important;
-    font-size: 9px !important;
+  &__credit {
+    position: absolute;
+    left: 8px;
+    bottom: 6px;
+    right: 8px;
+    z-index: 1;
+    font-size: 9px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
+
+.sheet-icon-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--app-text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 14px;
+  }
+
+  &.saved {
+    background: rgba(95, 217, 122, 0.2);
+    color: var(--app-green);
+  }
+}
+
+/* Two equal-width actions. Labels are sentence case, not shouty caps — they
+ * read as descriptions of where the button takes you rather than commands. */
+.sheet-btn {
+  flex: 1;
+  --border-radius: 14px;
+  font-weight: 700;
+  font-size: 12.5px;
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0;
+
+  ion-icon {
+    font-size: 15px;
+    margin-right: 5px;
+  }
+
+  &.primary {
+    --background: var(--app-green);
+    --background-activated: var(--app-green-dark);
+    --color: #08110a;
+  }
+
+  &.secondary {
+    --background: rgba(255, 255, 255, 0.08);
+    --background-activated: rgba(255, 255, 255, 0.14);
+    --color: var(--app-text);
+
+    &.on {
+      --background: rgba(95, 217, 122, 0.18);
+      --color: var(--app-green);
+    }
+  }
+}
+
+/* Full-width row of its own, under the two map actions. Outlined rather than
+ * filled so it reads as secondary to "How to get there". */
+.video-btn {
+  width: 100%;
+  margin-top: 8px;
+  --background: transparent;
+  --background-activated: rgba(255, 255, 255, 0.08);
+  --color: var(--app-text-dim);
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: rgba(255, 255, 255, 0.14);
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
 }

@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-title>Explore Trails</ion-title>
   </ion-toolbar>
+
   <ion-toolbar>
     <ion-searchbar
       placeholder="Search trails or peaks..."
@@ -9,69 +10,213 @@
       (ionInput)="onSearch($event)"
     ></ion-searchbar>
   </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-segment
+      [value]="difficultyFilter()"
+      (ionChange)="onSegmentChange($event)"
+      class="difficulty-seg"
+    >
+      <ion-segment-button value="All"><ion-label>All</ion-label></ion-segment-button>
+      <ion-segment-button value="Easy"><ion-label>Easy</ion-label></ion-segment-button>
+      <ion-segment-button value="Moderate"><ion-label>Moderate</ion-label></ion-segment-button>
+      <ion-segment-button value="Hard"><ion-label>Hard</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" [scrollY]="false" class="map-content">
+<ion-content [fullscreen]="false" [scrollY]="false" class="map-content">
 
-  <div #mapEl class="trail-map"></div>
+  <app-trail-map
+    [trails]="results()"
+    [selectedId]="selectedTrail()?.id ?? null"
+    (trailSelect)="onMapSelect($event)"
+  ></app-trail-map>
 
-  @if (showWeatherAlert()) {
-    <div class="weather-alert">
-      <ion-icon name="cloud-outline"></ion-icon>
-      <div class="weather-alert__text">
-        <strong>Weather Alert</strong>
-        <span>Heavy rain expected in {{ weatherAlertHours() }}h</span>
-      </div>
-      <ion-icon name="close" class="weather-alert__close" (click)="dismissWeatherAlert()"></ion-icon>
+  <div class="map-scrim"></div>
+
+  <!-- Weather banner, fed by the existing WeatherService -->
+  <div class="weather-alert" *ngIf="showWeatherAlert()">
+    <ion-icon name="cloud-outline"></ion-icon>
+    <div class="weather-alert__text">
+      <strong>{{ weather().condition }}</strong>
+      <span>{{ weather().message }}</span>
     </div>
-  }
+    <span class="weather-alert__temp">{{ weather().temp }}&deg;</span>
+    <ion-icon
+      name="close"
+      class="weather-alert__close"
+      (click)="dismissWeatherAlert()"
+    ></ion-icon>
+  </div>
+
+  <!-- Empty state: filters matched nothing, or nothing has coordinates yet -->
+  <div class="map-empty" *ngIf="results().length === 0">
+    <ion-icon name="map-outline"></ion-icon>
+    <span>No trails match your filters</span>
+  </div>
 
   <div class="map-fabs">
-    <button class="map-fab" (click)="toggleBookmark()">
+    <button
+      class="map-fab"
+      [class.active]="showSavedPanel()"
+      (click)="toggleSavedPanel()"
+      aria-label="Saved trails"
+    >
       <ion-icon name="bookmark-outline"></ion-icon>
+      <span class="map-fab__badge" *ngIf="savedTrails().length">
+        {{ savedTrails().length }}
+      </span>
     </button>
-    <button class="map-fab" (click)="centerOnUser()">
+
+    <button class="map-fab" (click)="centerOnUser()" aria-label="Center on my location">
       <ion-icon name="navigate-outline"></ion-icon>
     </button>
-    <button class="map-fab" (click)="toggleLayers()">
+
+    <button class="map-fab" (click)="toggleLayers()" aria-label="Change map style">
       <ion-icon name="layers-outline"></ion-icon>
     </button>
   </div>
 
-  @if (selectedTrail(); as trail) {
-    <div class="trail-sheet">
-      <div class="trail-sheet__top">
-        <span class="trail-sheet__eyebrow">ACTIVE TRAIL</span>
-        <span class="trail-sheet__badge" [class.hard]="trail.difficulty === 'Hard'">
-          {{ trail.difficulty }}
-        </span>
+  <!-- Saved trails, opened from the bookmark FAB -->
+  <div class="saved-panel" *ngIf="showSavedPanel()">
+    <div class="saved-panel__head">
+      <strong>Saved trails</strong>
+      <ion-icon name="close" (click)="toggleSavedPanel()"></ion-icon>
+    </div>
+
+    <div class="saved-panel__empty" *ngIf="savedTrails().length === 0">
+      <ion-icon name="bookmark-outline"></ion-icon>
+      <span>Nothing saved yet. Tap a trail, then the save icon.</span>
+    </div>
+
+    <button
+      class="saved-item"
+      *ngFor="let t of savedTrails()"
+      (click)="selectFromSaved(t)"
+    >
+      <span class="saved-item__dot" [class.closed]="isClosed(t)"></span>
+      <span class="saved-item__text">
+        <strong>{{ t.name }}</strong>
+        <span>{{ t.region }}</span>
+      </span>
+      <ion-icon
+        name="close"
+        class="saved-item__remove"
+        (click)="removeSaved(t, $event)"
+      ></ion-icon>
+    </button>
+  </div>
+
+  <div class="trail-sheet" *ngIf="selectedTrail() as trail">
+
+    <div class="trail-sheet__actions">
+      <button
+        class="sheet-icon-btn"
+        [class.saved]="isSaved(trail)"
+        (click)="toggleBookmark(trail)"
+        [attr.aria-label]="isSaved(trail) ? 'Remove from saved' : 'Save this trail'"
+      >
+        <ion-icon [name]="isSaved(trail) ? 'bookmark' : 'bookmark-outline'"></ion-icon>
+      </button>
+      <button class="sheet-icon-btn" (click)="openTrail(trail)" aria-label="Trail details">
+        <ion-icon name="information-circle-outline"></ion-icon>
+      </button>
+      <button class="sheet-icon-btn" (click)="closeSheet()" aria-label="Close">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+
+    <div class="trail-sheet__top">
+      <span class="trail-sheet__eyebrow">
+        {{ isSaved(trail) ? 'SAVED TRAIL' : 'SELECTED TRAIL' }}
+      </span>
+      <span class="trail-sheet__rating" *ngIf="trail.rating > 0">
+        <ion-icon name="star"></ion-icon>{{ trail.rating }}
+      </span>
+      <span
+        class="trail-sheet__badge"
+        [ngClass]="trail.difficulty.toLowerCase()"
+      >{{ trail.difficulty }}</span>
+      <span class="trail-sheet__badge closed" *ngIf="isClosed(trail)">CLOSED</span>
+    </div>
+
+    <h2 class="trail-sheet__name">{{ trail.name }}</h2>
+    <p class="trail-sheet__region">
+      <ion-icon name="location-outline"></ion-icon>{{ trail.region }}
+    </p>
+
+    <div class="trail-sheet__stats">
+      <div>
+        <span class="label">Distance</span>
+        <span class="value">{{ trail.distance }}</span>
       </div>
-
-      <h2 class="trail-sheet__name">{{ trail.name }}</h2>
-
-      <div class="trail-sheet__stats">
-        <div>
-          <span class="label">Distance</span>
-          <span class="value">{{ trail.distance }}</span>
-        </div>
-        <div>
-          <span class="label">Elevation</span>
-          <span class="value">{{ trail.elevation }}</span>
-        </div>
-        <div>
-          <span class="label">Duration</span>
-          <span class="value">{{ trail.duration }}</span>
-        </div>
+      <div>
+        <span class="label">Elevation</span>
+        <span class="value">{{ trail.elevation }}</span>
       </div>
-
-      <div class="trail-sheet__progress">
-        <div class="bar" style="width: 65%"></div>
+      <div>
+        <span class="label">Duration</span>
+        <span class="value">{{ trail.duration }}</span>
       </div>
+    </div>
 
-      <ion-button expand="block" class="book-btn" (click)="openTrail(trail)">
-        Book Now
+    <!-- Purely a photograph of the mountain. No play button: the video is its
+         own control below, so the two are never confused. -->
+    <div class="trail-photo">
+      <img
+        [src]="photo(trail).url"
+        [alt]="hasPhoto(trail) ? trail.name : ''"
+        loading="lazy"
+      />
+
+      <!-- Says plainly that no photo exists, rather than passing the
+           placeholder illustration off as a picture of the mountain. -->
+      <span class="trail-photo__none" *ngIf="!hasPhoto(trail)">
+        <ion-icon name="image-outline"></ion-icon>
+        No photo yet
+      </span>
+
+      <!-- Licence condition for Commons images, not decoration. `title` is
+           only present in newer generated files, so it is guarded — without
+           the guard this renders a literal "undefined". -->
+      <span class="trail-photo__credit" *ngIf="photo(trail).credit">
+        {{ photo(trail).credit }} · {{ photo(trail).license }}
+      </span>
+    </div>
+
+    <div class="trail-sheet__footer">
+      <ion-button
+        expand="block"
+        class="sheet-btn primary"
+        [disabled]="isClosed(trail)"
+        (click)="openDirections(trail)"
+      >
+        <ion-icon name="navigate" slot="start"></ion-icon>
+        How to get there
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="sheet-btn secondary"
+        [class.on]="routeShown()"
+        (click)="onTrailMapTap()"
+      >
+        <ion-icon name="map-outline" slot="start"></ion-icon>
+        {{ routeShown() ? 'Hide route' : 'Trail map' }}
       </ion-button>
     </div>
-  }
+
+    <!-- Its own control: a walkthrough of the trail, not of the mountain. -->
+    <ion-button
+      expand="block"
+      class="sheet-btn video-btn"
+      (click)="onVideoTap()"
+    >
+      <ion-icon name="play-circle-outline" slot="start"></ion-icon>
+      Watch trail video
+    </ion-button>
+
+  </div>
 
 </ion-content>
