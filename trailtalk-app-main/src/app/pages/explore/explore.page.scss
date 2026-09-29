@@ -549,3 +549,11 @@ ion-searchbar {
   from { transform: translateY(100%); }
   to   { transform: translateY(0); }
 }
+.sheet-btn.book-now {
+  width: 100%;
+  margin-top: 8px;
+  --background: var(--app-green);
+  --background-activated: var(--app-green-dark);
+  --color: #08110a;
+  font-weight: 800;
+}

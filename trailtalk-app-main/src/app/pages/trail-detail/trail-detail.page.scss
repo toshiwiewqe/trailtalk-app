@@ -162,3 +162,287 @@
   padding: 60px 20px;
   color: var(--app-text-dim);
 }
+
+.tagline {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--app-green);
+  margin: -14px 0 20px;
+}
+
+.why-list {
+  margin: 0 0 24px;
+  padding-left: 18px;
+
+  li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--app-text-dim);
+    margin-bottom: 6px;
+  }
+}
+
+.story-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--app-text-dim);
+  white-space: pre-line;
+  margin: 0 0 24px;
+}
+/* Append to the BOTTOM of trail-detail.page.scss.
+   Covers the story sections and the review system. */
+
+/* ── Story sections ─────────────────────────────────────────────────── */
+
+.tagline {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--app-green);
+  margin: -14px 0 22px;
+}
+
+.why-list {
+  margin: 0 0 24px;
+  padding-left: 18px;
+
+  li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--app-text-dim);
+    margin-bottom: 6px;
+  }
+}
+
+.story-text {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--app-text-dim);
+  white-space: pre-line;
+  margin: 0 0 28px;
+}
+
+/* ── Reviews ────────────────────────────────────────────────────────── */
+
+.reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .section-title { margin: 0; }
+
+  .rating-inline {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--app-green);
+
+    ion-icon { color: #ffd257; }
+  }
+}
+
+.reviews-empty {
+  text-align: center;
+  padding: 22px 16px;
+  margin-bottom: 20px;
+  border: 1px dashed var(--app-border);
+  border-radius: 16px;
+
+  ion-icon {
+    font-size: 26px;
+    color: var(--app-text-dim);
+    opacity: 0.6;
+  }
+
+  p {
+    margin: 8px 0 4px;
+    font-size: 13px;
+    color: var(--app-text-dim);
+  }
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-green);
+}
+
+.write-review-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 600;
+
+  ion-icon { font-size: 16px; color: var(--app-green); }
+}
+
+.review-form {
+  background: var(--app-card-bg);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 20px;
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 12.5px;
+    color: var(--app-text-dim);
+  }
+
+  .form-input {
+    --background: rgba(255, 255, 255, 0.05);
+    --color: var(--app-text);
+    --placeholder-color: var(--app-text-dim);
+    --padding-start: 12px;
+    --padding-end: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 4px;
+  }
+}
+
+.star-picker {
+  display: flex;
+  gap: 6px;
+
+  ion-icon {
+    font-size: 22px;
+    color: var(--app-text-dim);
+
+    &.filled { color: #ffd257; }
+  }
+}
+
+.post-btn {
+  background: var(--app-green);
+  color: #08110a;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 12px;
+}
+
+.review-card {
+  position: relative;
+  background: var(--app-card-bg);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  /* Initial in a circle — no avatar images to invent or load. */
+  .review-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--app-green);
+    color: #08110a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .review-meta {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+
+    .author {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--app-text);
+    }
+
+    .stars ion-icon {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.18);
+
+      &.filled { color: #ffd257; }
+    }
+  }
+
+  .date {
+    font-size: 10.5px;
+    color: var(--app-text-dim);
+    flex-shrink: 0;
+  }
+
+  .review-text {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--app-text-dim);
+    margin: 0;
+    padding-right: 20px;
+  }
+
+  .delete-review {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    padding: 4px;
+
+    ion-icon {
+      font-size: 14px;
+      color: var(--app-text-dim);
+      opacity: 0.5;
+    }
+  }
+}
+
+.book-now-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 16px;
+  border: none;
+  border-radius: 18px;
+  background: var(--app-green);
+  color: #08110a;
+  font-weight: 800;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  ion-icon { font-size: 18px; }
+}

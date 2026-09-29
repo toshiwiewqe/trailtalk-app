@@ -217,6 +217,12 @@
       Watch trail video
     </ion-button>
 
+    <ion-button expand="block" class="sheet-btn book-now"
+      [disabled]="isClosed(trail)" (click)="bookNow(trail)">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      {{ isClosed(trail) ? 'Trail closed' : 'Book Now' }}
+    </ion-button>
+
   </div>
 
 </ion-content>

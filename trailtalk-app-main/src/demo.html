@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrailTalk — Preview</title>
+<meta name="description" content="TrailTalk, a hiking and trail community app for Philippine mountains.">
+<style>
+  :root {
+    --bg: #0f1115;
+    --text: #e8ebf0;
+    --dim: #79818f;
+    --accent: #5fd97a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1000px 560px at 50% -10%, #1a2a1f 0%, transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 28px 16px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 21px;
+    letter-spacing: -0.2px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .sub {
+    margin: -12px 0 0;
+    color: var(--dim);
+    font-size: 13px;
+    text-align: center;
+    max-width: 420px;
+  }
+
+  /* Phone bezel. The inner screen is 390x844 (iPhone 14). */
+  .phone {
+    position: relative;
+    width: 414px;
+    height: 868px;
+    max-height: calc(100vh - 150px);
+    padding: 12px;
+    border-radius: 46px;
+    background: #0a0c0f;
+    box-shadow:
+      0 0 0 2px #262c35,
+      0 0 0 6px #14181e,
+      0 30px 70px rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+  }
+
+  /* Notch, above the screen. */
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 27px;
+    border-radius: 0 0 16px 16px;
+    background: #0a0c0f;
+    z-index: 2;
+  }
+
+  .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 34px;
+    overflow: hidden;
+    background: #0f1713;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .foot {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+
+  .foot a { color: var(--accent); text-decoration: none; }
+  .foot a:hover { text-decoration: underline; }
+
+  /* On an actual phone the bezel is pointless — show the app full-bleed and
+     let the visitor use it as an app rather than look at a picture of one. */
+  @media (max-width: 720px) {
+    body { padding: 0; gap: 0; }
+    h1, .sub, .foot { display: none; }
+    .phone {
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .phone::before { display: none; }
+    .screen { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <h1>Trail<span>Talk</span></h1>
+  <p class="sub">Hiking and trail community app for Philippine mountains.</p>
+
+  <div class="phone">
+    <div class="screen">
+      <!-- Relative path: this page and the app are served from the same site,
+           so the frame follows whatever domain it is opened from. -->
+      <iframe src="./" title="TrailTalk app"></iframe>
+    </div>
+  </div>
+
+  <p class="foot">
+    <a href="./">Open full screen</a>
+    <span>·</span>
+    <span>Best viewed on a phone</span>
+  </p>
+
+</body>
+</html>

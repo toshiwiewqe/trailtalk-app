@@ -167,3 +167,96 @@ ion-searchbar {
 .bottom-spacer {
   height: 24px;
 }
+
+/* Filter button and panel */
+.filter-btn {
+  position: relative;
+  background: var(--app-card-bg);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon { font-size: 20px; color: var(--app-text); }
+
+  &.open {
+    background: var(--app-green);
+    ion-icon { color: #08110a; }
+  }
+}
+
+.filter-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--app-green);
+  border: 2px solid var(--app-card-bg);
+}
+
+.filter-panel {
+  background: var(--app-card-bg);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.filter-group + .filter-group { margin-top: 12px; }
+
+.filter-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--app-text-dim);
+  margin-bottom: 8px;
+}
+
+.filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.filter-pill {
+  border: 1px solid var(--app-border);
+  background: transparent;
+  color: var(--app-text-dim);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 20px;
+
+  &.active {
+    background: var(--app-green);
+    border-color: var(--app-green);
+    color: #08110a;
+  }
+}
+
+.filter-clear {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--app-text-dim);
+  font-size: 12px;
+
+  ion-icon { font-size: 13px; }
+}
+/* Brand row — emblem upper-left, bell upper-right, search below */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 14px 8px;
+
+  .bell-btn { margin-left: auto; }
+}

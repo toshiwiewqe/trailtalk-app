@@ -9,7 +9,7 @@ import { addIcons } from 'ionicons';
 import {
   cloudOutline, close, bookmark, bookmarkOutline, navigateOutline,
   layersOutline, locationOutline, mapOutline, star, navigate,
-  playCircleOutline, videocamOutline, informationCircleOutline, imageOutline,
+  playCircleOutline, videocamOutline, informationCircleOutline, imageOutline, calendarOutline
 } from 'ionicons/icons';
 
 import { TrailMapComponent } from './trail-map/trail-map.component';
@@ -24,7 +24,7 @@ import { Trail } from '../../models/trail.model';
 addIcons({
   cloudOutline, close, bookmark, bookmarkOutline, navigateOutline,
   layersOutline, locationOutline, mapOutline, star, navigate,
-  playCircleOutline, videocamOutline, informationCircleOutline, imageOutline,
+  playCircleOutline, videocamOutline, informationCircleOutline, imageOutline, calendarOutline
 });
 
 @Component({
@@ -186,16 +186,8 @@ export class ExplorePage implements ViewDidEnter {
     this.showWeatherAlert.set(false);
   }
 
-  /**
-   * The detail page reads from TrailService, which does not know about the
-   * Explore dataset's ids. Check before navigating rather than dropping the
-   * user on a "Trail not found" screen.
-   */
+  /* connects the details button on home and explore to the detail page */
   openTrail(trail: Trail) {
-    if (!this.trailService.getById(trail.id)) {
-      this.toast('Full details for this trail are not available yet');
-      return;
-    }
     this.router.navigate(['/trail', trail.id]);
   }
 
@@ -260,10 +252,14 @@ export class ExplorePage implements ViewDidEnter {
     }
   }
 
-  private async toast(message: string) {
+    private async toast(message: string) {
     const t = await this.toastCtrl.create({
       message, duration: 1600, position: 'top', color: 'dark',
     });
     t.present();
+  }
+
+  bookNow(trail: Trail) {
+    this.router.navigate(['/booking', trail.id]);
   }
 }

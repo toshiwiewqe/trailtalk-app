@@ -1,0 +1,85 @@
+<ion-content [fullscreen]="true">
+  <div class="bc-wrap" *ngIf="booking() as b; else missing">
+
+    <div class="bc-check">
+      <ion-icon name="checkmark"></ion-icon>
+    </div>
+
+    <h1>Booking confirmed</h1>
+    <p class="bc-sub">
+      Your adventure to <strong>{{ b.trailName }}</strong> is all set for
+      {{ prettyDate() }}.
+    </p>
+
+    <div class="bc-card">
+      <span class="bc-label">Booking ID</span>
+      <span class="bc-ref">#{{ b.reference }}</span>
+
+      <div class="bc-divider"></div>
+
+      <div class="bc-line">
+        <div class="bc-thumb" [style.backgroundImage]="'url(' + b.trailImage + ')'"></div>
+        <div class="bc-meta">
+          <span class="l">Trail</span>
+          <span class="v">{{ b.trailName }}</span>
+        </div>
+      </div>
+
+      <div class="bc-line" *ngIf="b.guideName as g">
+        <span class="bc-avatar">{{ g.charAt(0) }}</span>
+        <div class="bc-meta">
+          <span class="l">Guide</span>
+          <span class="v">{{ g }}</span>
+        </div>
+      </div>
+
+      <div class="bc-divider"></div>
+
+      <div class="bc-row">
+        <span>Package</span>
+        <span>{{ b.packageName }}</span>
+      </div>
+
+      <div class="bc-row" *ngIf="b.activityNames.length">
+        <span>Activities</span>
+        <span>{{ b.activityNames.join(', ') }}</span>
+      </div>
+
+      <div class="bc-row" *ngFor="let m of b.merch">
+        <span>{{ m.name }} × {{ m.qty }}</span>
+        <span>₱{{ m.lineTotal | number }}</span>
+      </div>
+
+      <div class="bc-row">
+        <span>Paid with</span>
+        <span>
+          {{ b.paymentMethod }}<ng-container *ngIf="b.cardLast4"> •••• {{ b.cardLast4 }}</ng-container>
+        </span>
+      </div>
+
+      <div class="bc-row total">
+        <span>Total paid</span>
+        <span>₱{{ b.total | number }}</span>
+      </div>
+
+      <div class="bc-reminder">
+        <ion-icon name="warning-outline"></ion-icon>
+        <span>Check the summit weather 24 hours before your climb.</span>
+      </div>
+    </div>
+
+    <button class="bc-home" (click)="goHome()">
+      Back to home
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+
+    <button class="bc-link" (click)="viewBookings()">View my bookings</button>
+  </div>
+
+  <ng-template #missing>
+    <div class="bc-wrap">
+      <p class="bc-sub">That booking could not be found.</p>
+      <ion-button (click)="goHome()">Back to home</ion-button>
+    </div>
+  </ng-template>
+</ion-content>

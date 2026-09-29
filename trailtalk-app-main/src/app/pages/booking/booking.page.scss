@@ -1,0 +1,503 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOOKING PAGE
+
+   Every class is prefixed `bk-` so nothing here can collide with a teammate's
+   styles. Colours come from the app's existing CSS variables, with fallbacks
+   so the page still reads correctly if a variable is renamed.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:host {
+  --bk-green: var(--app-green, #5b9a63);
+  --bk-text: var(--app-text, #f2f5f2);
+  --bk-dim: var(--app-text-dim, #9aa89c);
+  --bk-card: var(--app-card-bg, #1b231c);
+  --bk-border: var(--app-border, rgba(255, 255, 255, 0.09));
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+
+.bk-hero {
+  position: relative;
+  height: 280px;
+  background-size: cover;
+  background-position: center;
+}
+
+.transparent-header ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+}
+
+.round-btn {
+  --background: rgba(0, 0, 0, 0.45);
+  --border-radius: 50%;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --color: #fff;
+  width: 38px;
+  height: 38px;
+  margin-left: 8px;
+}
+
+.bk-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(10, 14, 11, 0.95) 100%
+  );
+}
+
+.bk-hero-body {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 16px;
+
+  h1 {
+    margin: 6px 0 4px;
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+  }
+}
+
+.bk-region {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.82);
+
+  ion-icon { font-size: 13px; }
+}
+
+.bk-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.bk-chip {
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--bk-green);
+  color: #08110a;
+
+  &.difficulty { background: #b8562f; color: #fff; }
+  &.closed { background: #8c3030; color: #fff; }
+}
+
+/* ── Body ───────────────────────────────────────────────────────────────── */
+
+.bk-body {
+  padding: 22px 20px 0;
+}
+
+.bk-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--bk-text);
+}
+
+.bk-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
+  .bk-title { margin-bottom: 12px; }
+}
+
+.bk-caption {
+  font-size: 11.5px;
+  color: var(--bk-dim);
+}
+
+.bk-hint {
+  margin: 0 0 18px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--bk-dim);
+
+  &.tight { margin: -6px 0 12px; }
+}
+
+.bk-note {
+  margin: -4px 0 16px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(200, 160, 60, 0.12);
+  border: 1px solid rgba(200, 160, 60, 0.28);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #e0c98a;
+}
+
+/* ── Date strip ─────────────────────────────────────────────────────────── */
+
+.bk-dates {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin: 0 -20px 26px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  /* A visible scrollbar in a tap-to-scroll strip is just noise. */
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bk-date {
+  flex: 0 0 auto;
+  width: 58px;
+  padding: 10px 0;
+  border-radius: 14px;
+  border: 1px solid var(--bk-border);
+  background: var(--bk-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  .wd {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--bk-dim);
+  }
+
+  .dd {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--bk-text);
+  }
+
+  &.active {
+    background: var(--bk-green);
+    border-color: var(--bk-green);
+
+    .wd { color: rgba(8, 17, 10, 0.75); }
+    .dd { color: #08110a; }
+  }
+}
+
+/* ── Packages ───────────────────────────────────────────────────────────── */
+
+.bk-pack {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  border: 1px solid var(--bk-border);
+  background: var(--bk-card);
+  color: var(--bk-text);
+
+  &.active {
+    border-color: var(--bk-green);
+    box-shadow: inset 0 0 0 1px var(--bk-green);
+  }
+}
+
+.bk-pack-main { min-width: 0; }
+
+.bk-pack-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.bk-pack-list {
+  margin: 0;
+  padding-left: 15px;
+
+  li {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--bk-dim);
+  }
+}
+
+.bk-pack-price {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--bk-text);
+}
+
+/* ── Activities ─────────────────────────────────────────────────────────── */
+
+.bk-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.bk-act {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--bk-border);
+  background: var(--bk-card);
+  color: var(--bk-text);
+  font-size: 12px;
+
+  ion-icon { font-size: 15px; color: var(--bk-green); }
+
+  .n { font-weight: 600; }
+
+  .p {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bk-dim);
+  }
+
+  &.active {
+    background: var(--bk-green);
+    border-color: var(--bk-green);
+    color: #08110a;
+
+    ion-icon { color: #08110a; }
+    .p { color: rgba(8, 17, 10, 0.75); }
+  }
+}
+
+/* ── Guides ─────────────────────────────────────────────────────────────── */
+
+.bk-guide {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  border: 1px solid var(--bk-border);
+  background: var(--bk-card);
+  color: var(--bk-text);
+
+  &.active { border-color: var(--bk-green); }
+}
+
+.bk-guide-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bk-green);
+  color: #08110a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.bk-guide-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  .n { font-size: 13.5px; font-weight: 700; }
+  .s { font-size: 11px; color: var(--bk-dim); }
+}
+
+.bk-radio {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--bk-border);
+
+  &.on {
+    border-color: var(--bk-green);
+    background: var(--bk-green);
+    box-shadow: inset 0 0 0 3px var(--bk-card);
+  }
+}
+
+/* ── Merchandise ────────────────────────────────────────────────────────── */
+
+.bk-merch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  background: var(--bk-card);
+
+  > ion-icon {
+    font-size: 20px;
+    color: var(--bk-green);
+    flex-shrink: 0;
+  }
+}
+
+.bk-merch-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  .n { font-size: 13px; font-weight: 600; color: var(--bk-text); }
+  .p { font-size: 11.5px; font-weight: 700; color: var(--bk-green); }
+}
+
+.bk-stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  .qty {
+    min-width: 14px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bk-text);
+  }
+
+  .step {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--bk-border);
+    background: transparent;
+    color: var(--bk-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon { font-size: 15px; }
+
+    &:disabled { opacity: 0.3; }
+
+    &.add {
+      background: var(--bk-green);
+      border-color: var(--bk-green);
+      color: #08110a;
+    }
+  }
+}
+
+/* ── Running total ──────────────────────────────────────────────────────── */
+
+.bk-summary {
+  margin-top: 26px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bk-card);
+
+  .bk-title { font-size: 14px; margin-bottom: 10px; }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12.5px;
+    color: var(--bk-text);
+    padding: 5px 0;
+
+    &.muted { color: var(--bk-dim); }
+
+    &.total {
+      margin-top: 8px;
+      padding-top: 11px;
+      border-top: 1px solid var(--bk-border);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--bk-green);
+    }
+  }
+}
+
+/* Clears the sticky footer so the last row is never trapped underneath it. */
+.bk-spacer { height: 110px; }
+
+/* ── Sticky footer ──────────────────────────────────────────────────────── */
+
+.bk-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(12, 17, 13, 0.96);
+  border-top: 1px solid var(--bk-border);
+  backdrop-filter: blur(12px);
+}
+
+.bk-footer-price {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  .l {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bk-dim);
+  }
+
+  .v { font-size: 18px; font-weight: 800; color: var(--bk-text); }
+}
+
+.bk-cta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: var(--bk-green);
+  color: #08110a;
+  font-size: 14px;
+  font-weight: 800;
+
+  ion-icon { font-size: 16px; }
+
+  &:disabled {
+    background: #3a423b;
+    color: var(--bk-dim);
+  }
+}
+
+/* ── Not found ──────────────────────────────────────────────────────────── */
+
+.bk-missing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 100%;
+  color: var(--bk-dim);
+}

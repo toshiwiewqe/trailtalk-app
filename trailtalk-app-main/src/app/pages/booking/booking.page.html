@@ -1,0 +1,206 @@
+<ion-content [fullscreen]="true" *ngIf="trail() as t">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="bk-hero" [style.backgroundImage]="'url(' + t.image + ')'">
+    <ion-header class="ion-no-border transparent-header">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="round-btn">
+            <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <div class="bk-hero-gradient"></div>
+
+    <div class="bk-hero-body">
+      <div class="bk-chips">
+        <span class="bk-chip difficulty">{{ t.difficulty }} difficulty</span>
+        <span class="bk-chip" [class.closed]="isClosed(t)">
+          {{ isClosed(t) ? 'Closed' : 'Open' }}
+        </span>
+      </div>
+      <h1>{{ t.name }}</h1>
+      <p class="bk-region">
+        <ion-icon name="location-outline"></ion-icon> {{ t.region }}
+      </p>
+    </div>
+  </div>
+
+  <div class="bk-body">
+
+    <!-- ── Date ────────────────────────────────────────────────────────── -->
+    <div class="bk-section-head">
+      <p class="bk-title">Select date</p>
+      <span class="bk-caption">{{ monthCaption() }}</span>
+    </div>
+
+    <div class="bk-dates">
+      <button
+        class="bk-date"
+        *ngFor="let d of dateOptions"
+        [class.active]="d.iso === date()"
+        (click)="selectDate(d.iso)"
+      >
+        <span class="wd">{{ d.weekday }}</span>
+        <span class="dd">{{ d.day }}</span>
+      </button>
+    </div>
+
+    <!-- ── Package ─────────────────────────────────────────────────────── -->
+    <p class="bk-title">Hiking package</p>
+
+    <button
+      class="bk-pack"
+      *ngFor="let p of packages"
+      [class.active]="p.id === packageId()"
+      (click)="selectPackage(p.id)"
+    >
+      <div class="bk-pack-main">
+        <span class="bk-pack-name">{{ p.name }}</span>
+        <ul class="bk-pack-list">
+          <li *ngFor="let line of p.includes">{{ line }}</li>
+        </ul>
+      </div>
+      <span class="bk-pack-price">₱{{ p.price | number }}</span>
+    </button>
+
+    <!-- ── Activities ──────────────────────────────────────────────────── -->
+    <p class="bk-title">Add activities</p>
+
+    <div class="bk-acts">
+      <button
+        class="bk-act"
+        *ngFor="let a of activities"
+        [class.active]="isActivityOn(a.id)"
+        (click)="toggleActivity(a.id)"
+      >
+        <ion-icon [name]="a.icon"></ion-icon>
+        <span class="n">{{ a.name }}</span>
+        <span class="p" *ngIf="isActivityCovered(a.id); else actPrice">Included</span>
+        <ng-template #actPrice>
+          <span class="p">+₱{{ a.price | number }}</span>
+        </ng-template>
+      </button>
+    </div>
+
+    <ng-container *ngFor="let a of activities">
+      <p class="bk-note" *ngIf="a.note && isActivityOn(a.id)">{{ a.note }}</p>
+    </ng-container>
+
+    <!-- ── Guide ───────────────────────────────────────────────────────── -->
+    <div class="bk-section-head">
+      <p class="bk-title">Expert guide</p>
+      <span class="bk-caption">Optional</span>
+    </div>
+
+    <button
+      class="bk-guide"
+      *ngFor="let g of guides"
+      [class.active]="g.id === guideId()"
+      (click)="selectGuide(g.id)"
+    >
+      <!-- An initial in a circle. No stock photos of people who never agreed
+           to front a hiking app. -->
+      <span class="bk-guide-avatar">{{ g.name.charAt(0) }}</span>
+      <span class="bk-guide-meta">
+        <span class="n">{{ g.name }}</span>
+        <span class="s">{{ g.years }} yrs experience · {{ g.summits }}+ summits</span>
+      </span>
+      <span class="bk-radio" [class.on]="g.id === guideId()"></span>
+    </button>
+
+    <p class="bk-hint">
+      Leave this blank for no preference — your package already includes a guide,
+      and one will be assigned.
+    </p>
+
+    <!-- ── Merchandise ─────────────────────────────────────────────────── -->
+    <div class="bk-section-head">
+      <p class="bk-title">Merchandise</p>
+      <span class="bk-caption" *ngIf="merchCount() > 0">{{ merchCount() }} item(s)</span>
+    </div>
+    <p class="bk-hint tight">Designs are location-specific and provided by guides.</p>
+
+    <div class="bk-merch" *ngFor="let m of merchItems">
+      <ion-icon [name]="m.icon"></ion-icon>
+      <span class="bk-merch-meta">
+        <span class="n">{{ m.name }}</span>
+        <span class="p">₱{{ m.price | number }}</span>
+      </span>
+
+      <span class="bk-stepper">
+        <button
+          class="step"
+          [disabled]="merchQty(m.id) === 0"
+          (click)="removeMerch(m.id)"
+          [attr.aria-label]="'Remove one ' + m.name"
+        >
+          <ion-icon name="remove"></ion-icon>
+        </button>
+        <span class="qty">{{ merchQty(m.id) }}</span>
+        <button class="step add" (click)="addMerch(m.id)"
+          [attr.aria-label]="'Add one ' + m.name">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </span>
+    </div>
+
+    <!-- ── Running total ───────────────────────────────────────────────── -->
+    <div class="bk-summary" *ngIf="quote() as q">
+      <p class="bk-title">Your booking so far</p>
+
+      <div class="row">
+        <span>{{ q.packageName }}</span>
+        <span>₱{{ q.packagePrice | number }}</span>
+      </div>
+
+      <div class="row muted" *ngFor="let a of q.coveredActivities">
+        <span>{{ a.name }}</span>
+        <span>Included</span>
+      </div>
+
+      <div class="row" *ngFor="let a of q.paidActivities">
+        <span>{{ a.name }}</span>
+        <span>₱{{ a.price | number }}</span>
+      </div>
+
+      <div class="row" *ngFor="let l of q.merchLines">
+        <span>{{ l.name }} × {{ l.qty }}</span>
+        <span>₱{{ l.lineTotal | number }}</span>
+      </div>
+
+      <div class="row">
+        <span>Transaction fee</span>
+        <span>₱{{ q.transactionFee | number }}</span>
+      </div>
+
+      <div class="row total">
+        <span>Total</span>
+        <span>₱{{ q.total | number }}</span>
+      </div>
+    </div>
+
+    <div class="bk-spacer"></div>
+  </div>
+
+  <!-- ── Sticky footer ─────────────────────────────────────────────────── -->
+  <div class="bk-footer" *ngIf="quote() as q">
+    <div class="bk-footer-price">
+      <span class="l">Total price</span>
+      <span class="v">₱{{ q.total | number }}</span>
+    </div>
+    <button class="bk-cta" [disabled]="isClosed(t)" (click)="proceed()">
+      {{ isClosed(t) ? 'Trail closed' : 'Book adventure' }}
+      <ion-icon name="arrow-forward" *ngIf="!isClosed(t)"></ion-icon>
+    </button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!trail()">
+  <div class="bk-missing">
+    <p>Trail not found.</p>
+    <ion-button (click)="goBack()">Go back</ion-button>
+  </div>
+</ion-content>

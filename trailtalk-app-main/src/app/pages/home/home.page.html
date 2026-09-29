@@ -1,15 +1,33 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+
+    <!-- Brand row — emblem left, notifications right -->
+    <div class="brand-row">
+      <app-logo badgeOnly [height]="50"></app-logo>
+
+      <button class="bell-btn" (click)="goNotifications()">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-badge *ngIf="notificationService.unreadCount() > 0" class="bell-badge">{{ notificationService.unreadCount() }}</ion-badge>
+      </button>
+    </div>
+
     <div class="header-row">
       <ion-searchbar
         placeholder="Search trails, peaks, or regions..."
         [debounce]="150"
+        [value]="searchTerm()"
         (ionInput)="onSearch($event)"
         show-clear-button="focus"
       ></ion-searchbar>
-      <button class="bell-btn" (click)="goNotifications()">
-        <ion-icon name="notifications-outline"></ion-icon>
-        <ion-badge *ngIf="notificationService.unreadCount() > 0" class="bell-badge">{{ notificationService.unreadCount() }}</ion-badge>
+
+      <button
+        class="filter-btn"
+        [class.open]="showFilters()"
+        (click)="toggleFilters()"
+        aria-label="Filter and sort"
+      >
+        <ion-icon name="options-outline"></ion-icon>
+        <span class="filter-dot" *ngIf="activeFilterCount() > 0"></span>
       </button>
     </div>
   </ion-toolbar>
@@ -17,6 +35,41 @@
 
 <ion-content [fullscreen]="true">
   <div class="page-pad">
+
+    <!-- Filter panel -->
+    <div class="filter-panel" *ngIf="showFilters()">
+      <div class="filter-group">
+        <span class="filter-label">Difficulty</span>
+        <div class="filter-options">
+          <button
+            *ngFor="let d of difficulties"
+            class="filter-pill"
+            [class.active]="difficulty() === d"
+            (click)="setDifficulty(d)"
+          >{{ d }}</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Sort by</span>
+        <div class="filter-options">
+          <button
+            *ngFor="let s of sorts"
+            class="filter-pill"
+            [class.active]="sortBy() === s.key"
+            (click)="setSort(s.key)"
+          >{{ s.label }}</button>
+        </div>
+      </div>
+
+      <button
+        class="filter-clear"
+        *ngIf="activeFilterCount() > 0"
+        (click)="clearFilters()"
+      >
+        <ion-icon name="close"></ion-icon> Clear filters
+      </button>
+    </div>
 
     <!-- Weather Alert -->
     <div class="weather-card" (click)="onWeatherTap()">
@@ -41,10 +94,17 @@
       </ion-chip>
     </div>
 
-    <!-- Top Suggestions -->
+    <!-- Trail list -->
     <div class="section-header">
-      <span class="section-title">Top Suggestions</span>
-      <span class="view-all-link">View all</span>
+      <span class="section-title">
+        {{ isSearching() ? 'Search Results' : 'Top Suggestions' }}
+      </span>
+      <span class="view-all-link" *ngIf="isSearching(); else viewAllLink">
+        {{ resultCount() }} found
+      </span>
+      <ng-template #viewAllLink>
+        <span class="view-all-link" (click)="goExplore()">View all</span>
+      </ng-template>
     </div>
 
     <ng-container *ngIf="filteredTrails().length; else noResults">
@@ -58,7 +118,12 @@
     <ng-template #noResults>
       <div class="empty-state">
         <ion-icon name="compass-outline"></ion-icon>
-        <p>No trails match "{{ searchTerm() }}"</p>
+        <p *ngIf="isSearching(); else noFilterMatch">
+          No trails match "{{ searchTerm() }}"
+        </p>
+        <ng-template #noFilterMatch>
+          <p>No trails match these filters</p>
+        </ng-template>
       </div>
     </ng-template>
 

@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOOKING CONFIRMED — all classes prefixed `bc-`
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:host {
+  --bc-green: var(--app-green, #5b9a63);
+  --bc-text: var(--app-text, #f2f5f2);
+  --bc-dim: var(--app-text-dim, #9aa89c);
+  --bc-card: var(--app-card-bg, #1b231c);
+  --bc-border: var(--app-border, rgba(255, 255, 255, 0.09));
+}
+
+.bc-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 24px calc(32px + env(safe-area-inset-bottom));
+  text-align: center;
+
+  h1 {
+    margin: 26px 0 10px;
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--bc-text);
+  }
+}
+
+.bc-check {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: var(--bc-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* A soft halo rather than a hard edge — this is the one celebratory
+     moment in the flow. */
+  box-shadow: 0 0 0 14px rgba(91, 154, 99, 0.12);
+
+  ion-icon {
+    font-size: 52px;
+    color: #08110a;
+  }
+}
+
+.bc-sub {
+  margin: 0 0 30px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--bc-dim);
+  max-width: 300px;
+
+  strong { color: var(--bc-text); font-weight: 700; }
+}
+
+/* ── Receipt card ───────────────────────────────────────────────────────── */
+
+.bc-card {
+  width: 100%;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--bc-card);
+  text-align: left;
+}
+
+.bc-label {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bc-dim);
+}
+
+.bc-ref {
+  display: block;
+  margin-top: 5px;
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--bc-text);
+  /* Tabular figures keep the reference from shifting width per digit. */
+  font-variant-numeric: tabular-nums;
+}
+
+.bc-divider {
+  height: 1px;
+  margin: 15px 0;
+  background: var(--bc-border);
+}
+
+.bc-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  &:last-of-type { margin-bottom: 0; }
+}
+
+.bc-thumb {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-color: #12190f;
+}
+
+.bc-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bc-green);
+  color: #08110a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.bc-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  .l {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--bc-dim);
+  }
+
+  .v {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bc-text);
+  }
+}
+
+.bc-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 0;
+  font-size: 12.5px;
+  color: var(--bc-dim);
+
+  span:last-child {
+    color: var(--bc-text);
+    text-align: right;
+  }
+
+  &.total {
+    margin-top: 8px;
+    padding-top: 11px;
+    border-top: 1px solid var(--bc-border);
+    font-size: 15px;
+    font-weight: 800;
+
+    span:last-child { color: var(--bc-green); }
+  }
+}
+
+.bc-reminder {
+  display: flex;
+  gap: 9px;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 11px;
+  background: rgba(200, 160, 60, 0.12);
+  border: 1px solid rgba(200, 160, 60, 0.28);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #e0c98a;
+
+  ion-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────── */
+
+.bc-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 26px;
+  padding: 17px;
+  border: none;
+  border-radius: 15px;
+  background: var(--bc-green);
+  color: #08110a;
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  ion-icon { font-size: 16px; }
+}
+
+.bc-link {
+  margin-top: 16px;
+  padding: 6px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bc-dim);
+}

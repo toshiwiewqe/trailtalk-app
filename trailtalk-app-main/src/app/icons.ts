@@ -23,7 +23,7 @@ import {
   informationCircleOutline, sendOutline, trashOutline,
   flagOutline, mailOutline, callOutline,
   maleFemaleOutline, peopleOutline, imageOutline, ellipsisHorizontal,
-  ribbonOutline, walkOutline, thermometerOutline,
+  ribbonOutline, walkOutline, thermometerOutline, createOutline
 } from 'ionicons/icons';
 
 export function registerAppIcons() {

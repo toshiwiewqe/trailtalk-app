@@ -10,6 +10,7 @@ import { PostCardComponent } from '../../components/post-card/post-card.componen
 import { PostService } from '../../services/post.service';
 import { NotificationService } from '../../services/notification.service';
 import { Post } from '../../models/post.model';
+import { AppLogoComponent } from '../../components/app-logo/app-logo.component';
 
 @Component({
   selector: 'app-community',
@@ -18,7 +19,7 @@ import { Post } from '../../models/post.model';
   styleUrls: ['./community.page.scss'],
   imports: [
     CommonModule, FormsModule, IonContent, IonHeader, IonToolbar, IonIcon, IonBadge,
-    IonModal, IonTextarea, IonInput, PostCardComponent,
+    IonModal, IonTextarea, IonInput, PostCardComponent, AppLogoComponent,
   ],
 })
 export class CommunityPage {

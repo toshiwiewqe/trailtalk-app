@@ -23,9 +23,11 @@
         <h1>{{ t.name }}</h1>
         <p class="region"><ion-icon name="location-outline"></ion-icon> {{ t.region }}</p>
       </div>
-      <div class="rating">
+      <!-- Hidden until real reviews exist. "★ 0" reads as a bad score
+           rather than an absent one. -->
+      <div class="rating" *ngIf="averageRating() > 0">
         <ion-icon name="star"></ion-icon>
-        <span>{{ t.rating }}</span>
+        <span>{{ averageRating() }}</span>
       </div>
     </div>
 
@@ -55,10 +57,107 @@
     <p class="section-title">About this trail</p>
     <p class="description">{{ t.description }}</p>
 
+    <!-- Editorial content from trail-stories.ts -->
+    <ng-container *ngIf="story() as s">
+      <p class="tagline">{{ s.tagline }}</p>
+
+      <p class="section-title">Why people hike it</p>
+      <ul class="why-list">
+        <li *ngFor="let reason of s.whyHike">{{ reason }}</li>
+      </ul>
+
+      <p class="section-title">The story</p>
+      <p class="story-text" [innerText]="s.story"></p>
+    </ng-container>
+
+    <!-- ── Reviews ──────────────────────────────────────────────────── -->
+    <div class="reviews-header">
+      <p class="section-title">Reviews</p>
+      <span class="rating-inline" *ngIf="reviewCount() > 0">
+        <ion-icon name="star"></ion-icon>
+        {{ averageRating() }} ({{ reviewCount() }})
+      </span>
+    </div>
+
+    <!-- Honest empty state rather than invented testimonials -->
+    <div class="reviews-empty" *ngIf="reviewCount() === 0 && !showReviewForm()">
+      <ion-icon name="chatbubble-outline"></ion-icon>
+      <p>No reviews yet for {{ t.name }}.</p>
+      <button class="link-btn" (click)="toggleReviewForm()">Be the first to write one</button>
+    </div>
+
+    <button
+      class="write-review-btn"
+      *ngIf="reviewCount() > 0 && !showReviewForm()"
+      (click)="toggleReviewForm()"
+    >
+      <ion-icon name="create-outline"></ion-icon> Write a review
+    </button>
+
+    <!-- Review form -->
+    <div class="review-form" *ngIf="showReviewForm()">
+      <div class="form-row">
+        <span class="form-label">Your rating</span>
+        <div class="star-picker">
+          <ion-icon
+            *ngFor="let s of starSlots"
+            [name]="s <= draftRating() ? 'star' : 'star-outline'"
+            [class.filled]="s <= draftRating()"
+            (click)="setDraftRating(s)"
+          ></ion-icon>
+        </div>
+      </div>
+
+      <ion-input
+        class="form-input"
+        [(ngModel)]="draftAuthor"
+        placeholder="Your name"
+      ></ion-input>
+
+      <ion-textarea
+        class="form-input"
+        [(ngModel)]="draftText"
+        placeholder="How was the trail? Conditions, timing, anything worth knowing."
+        auto-grow="true"
+        rows="3"
+      ></ion-textarea>
+
+      <div class="form-actions">
+        <button class="link-btn" (click)="toggleReviewForm()">Cancel</button>
+        <button class="post-btn" (click)="submitReview()">Post review</button>
+      </div>
+    </div>
+
+    <!-- Review list -->
+    <div class="review-card" *ngFor="let r of reviews()">
+      <div class="review-top">
+        <div class="review-avatar">{{ r.author.charAt(0).toUpperCase() }}</div>
+        <div class="review-meta">
+          <span class="author">{{ r.author }}</span>
+          <span class="stars">
+            <ion-icon
+              name="star"
+              *ngFor="let s of starSlots"
+              [class.filled]="s <= r.rating"
+            ></ion-icon>
+          </span>
+        </div>
+        <span class="date">{{ timeAgo(r.createdAt) }}</span>
+      </div>
+      <p class="review-text">{{ r.text }}</p>
+      <button class="delete-review" (click)="deleteReview(r.id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </button>
+    </div>
+
     <button class="start-btn" (click)="startHike()">Start Hike</button>
     <button class="save-btn" (click)="toggleSave()">
       <ion-icon [name]="saved() ? 'checkmark-outline' : 'add-outline'"></ion-icon>
       {{ saved() ? 'Added to Planner' : 'Add to Planner' }}
+    </button>
+      <button class="book-now-btn" (click)="bookNow()">
+      <ion-icon name="calendar-outline"></ion-icon>
+      Book Now
     </button>
   </div>
 </ion-content>

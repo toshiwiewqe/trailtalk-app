@@ -1,0 +1,258 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHECKOUT PAGE — all classes prefixed `co-`
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:host {
+  --co-green: var(--app-green, #5b9a63);
+  --co-text: var(--app-text, #f2f5f2);
+  --co-dim: var(--app-text-dim, #9aa89c);
+  --co-card: var(--app-card-bg, #1b231c);
+  --co-border: var(--app-border, rgba(255, 255, 255, 0.09));
+}
+
+.co-header ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: var(--co-text);
+}
+
+ion-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.round-btn {
+  --background: rgba(255, 255, 255, 0.07);
+  --border-radius: 50%;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --color: var(--co-text);
+  width: 36px;
+  height: 36px;
+  margin-left: 8px;
+}
+
+.co-body {
+  padding: 8px 20px 0;
+}
+
+.co-title {
+  margin: 18px 0 11px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--co-text);
+}
+
+/* ── Order summary ──────────────────────────────────────────────────────── */
+
+.co-card {
+  padding: 15px;
+  border-radius: 18px;
+  background: var(--co-card);
+}
+
+.co-trail,
+.co-guide {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.co-guide { margin-top: 14px; }
+
+.co-thumb {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-color: #12190f;
+}
+
+.co-avatar {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--co-green);
+  color: #08110a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.co-trail-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+
+  .n { font-size: 14px; font-weight: 700; color: var(--co-text); }
+  .s { font-size: 11.5px; color: var(--co-dim); }
+}
+
+.co-divider {
+  height: 1px;
+  margin: 14px 0 10px;
+  background: var(--co-border);
+}
+
+.co-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 12.5px;
+  color: var(--co-text);
+
+  .muted { color: var(--co-dim); }
+
+  &.total {
+    margin-top: 8px;
+    padding-top: 11px;
+    border-top: 1px solid var(--co-border);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--co-green);
+  }
+}
+
+/* ── Payment methods ────────────────────────────────────────────────────── */
+
+.co-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.co-method {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--co-border);
+  background: var(--co-card);
+  color: var(--co-text);
+  font-size: 12.5px;
+  font-weight: 600;
+
+  ion-icon { font-size: 20px; color: var(--co-green); }
+
+  &.active {
+    border-color: var(--co-green);
+    box-shadow: inset 0 0 0 1px var(--co-green);
+  }
+
+  &.off {
+    opacity: 0.4;
+
+    ion-icon { color: var(--co-dim); }
+  }
+
+  .soon {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--co-dim);
+  }
+}
+
+/* ── Card form ──────────────────────────────────────────────────────────── */
+
+.co-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--co-dim);
+}
+
+.co-input {
+  --background: rgba(255, 255, 255, 0.05);
+  --color: var(--co-text);
+  --placeholder-color: var(--co-dim);
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 13px;
+  --padding-bottom: 13px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 13.5px;
+}
+
+.co-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Demo notice ────────────────────────────────────────────────────────── */
+
+.co-demo {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 13px;
+  border-radius: 12px;
+  background: rgba(200, 160, 60, 0.12);
+  border: 1px solid rgba(200, 160, 60, 0.3);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #e0c98a;
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    margin-top: 1px;
+  }
+
+  strong { color: #f0dda8; }
+}
+
+.co-spacer { height: 110px; }
+
+/* ── Sticky pay bar ─────────────────────────────────────────────────────── */
+
+.co-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(12, 17, 13, 0.96);
+  border-top: 1px solid var(--co-border);
+  backdrop-filter: blur(12px);
+}
+
+.co-pay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: var(--co-green);
+  color: #08110a;
+  font-size: 15px;
+  font-weight: 800;
+
+  ion-icon { font-size: 17px; }
+
+  &:disabled { opacity: 0.6; }
+}

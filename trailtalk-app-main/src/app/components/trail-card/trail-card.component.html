@@ -1,6 +1,9 @@
 <div class="trail-card" (click)="onTap()">
   <div class="trail-image" [style.backgroundImage]="'url(' + trail.image + ')'">
-    <div class="rating-chip">
+    <!-- Hidden while the rating is 0. The 30-trail dataset ships with no
+         review scores, and "★ 0" reads as a bad rating rather than an
+         absent one. -->
+    <div class="rating-chip" *ngIf="trail.rating > 0">
       <ion-icon name="star"></ion-icon>
       <span>{{ trail.rating }}</span>
     </div>

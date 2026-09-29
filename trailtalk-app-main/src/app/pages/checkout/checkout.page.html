@@ -1,0 +1,153 @@
+<ion-header class="ion-no-border co-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" class="round-btn">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="draft() as d">
+  <div class="co-body" *ngIf="quote() as q">
+
+    <!-- ── Order summary ───────────────────────────────────────────────── -->
+    <p class="co-title">Order summary</p>
+
+    <div class="co-card">
+      <div class="co-trail">
+        <div class="co-thumb" [style.backgroundImage]="'url(' + d.trailImage + ')'"></div>
+        <div class="co-trail-meta">
+          <span class="n">{{ d.trailName }}</span>
+          <span class="s">{{ prettyDate() }}</span>
+          <span class="s">{{ q.packageName }}</span>
+        </div>
+      </div>
+
+      <div class="co-guide" *ngIf="guideName() as g">
+        <span class="co-avatar">{{ g.charAt(0) }}</span>
+        <span class="co-trail-meta">
+          <span class="n">{{ g }}</span>
+          <span class="s">Your expert guide</span>
+        </span>
+      </div>
+
+      <div class="co-divider"></div>
+
+      <div class="co-row" *ngFor="let a of q.coveredActivities">
+        <span class="muted">{{ a.name }}</span>
+        <span class="muted">Included</span>
+      </div>
+
+      <div class="co-row" *ngFor="let a of q.paidActivities">
+        <span>{{ a.name }}</span>
+        <span>₱{{ a.price | number }}</span>
+      </div>
+
+      <div class="co-row" *ngFor="let l of q.merchLines">
+        <span>{{ l.name }} × {{ l.qty }}</span>
+        <span>₱{{ l.lineTotal | number }}</span>
+      </div>
+
+      <div class="co-row">
+        <span>Subtotal</span>
+        <span>₱{{ q.subtotal | number }}</span>
+      </div>
+
+      <div class="co-row">
+        <span>Transaction fee</span>
+        <span>₱{{ q.transactionFee | number }}</span>
+      </div>
+
+      <div class="co-row total">
+        <span>Total amount</span>
+        <span>₱{{ q.total | number }}</span>
+      </div>
+    </div>
+
+    <!-- ── Payment method ──────────────────────────────────────────────── -->
+    <p class="co-title">Payment method</p>
+
+    <div class="co-methods">
+      <button
+        class="co-method"
+        *ngFor="let m of methods"
+        [class.active]="m.id === method()"
+        [class.off]="!m.available"
+        (click)="selectMethod(m)"
+      >
+        <ion-icon [name]="m.icon"></ion-icon>
+        <span>{{ m.label }}</span>
+        <span class="soon" *ngIf="!m.available">Soon</span>
+      </button>
+    </div>
+
+    <!-- ── Card form ───────────────────────────────────────────────────── -->
+    <ng-container *ngIf="method() === 'card'">
+      <label class="co-label">Card number</label>
+      <ion-input
+        class="co-input"
+        inputmode="numeric"
+        placeholder="0000 0000 0000 0000"
+        [value]="cardNumber"
+        (ionInput)="onCardNumber($event)"
+      ></ion-input>
+
+      <div class="co-split">
+        <div>
+          <label class="co-label">Expiry date</label>
+          <ion-input
+            class="co-input"
+            inputmode="numeric"
+            placeholder="MM/YY"
+            [value]="expiry"
+            (ionInput)="onExpiry($event)"
+          ></ion-input>
+        </div>
+        <div>
+          <label class="co-label">CVV</label>
+          <ion-input
+            class="co-input"
+            type="password"
+            inputmode="numeric"
+            placeholder="123"
+            [value]="cvv"
+            (ionInput)="onCvv($event)"
+          ></ion-input>
+        </div>
+      </div>
+
+      <label class="co-label">Cardholder name</label>
+      <ion-input
+        class="co-input"
+        placeholder="Name on card"
+        [(ngModel)]="cardName"
+      ></ion-input>
+    </ng-container>
+
+    <!-- This notice is not decoration. A form that looks exactly like a real
+         card form should say plainly that it is not one. -->
+    <div class="co-demo">
+      <ion-icon name="warning-outline"></ion-icon>
+      <span>
+        <strong>Demo payment.</strong> No payment gateway is connected, no card
+        is charged, and nothing you type here leaves this device. Only the last
+        four digits are kept, for the receipt. Do not enter a real card.
+      </span>
+    </div>
+
+    <div class="co-spacer"></div>
+  </div>
+
+  <!-- ── Sticky pay bar ────────────────────────────────────────────────── -->
+  <div class="co-footer" *ngIf="quote() as q">
+    <button class="co-pay" [disabled]="processing()" (click)="pay()">
+      <ng-container *ngIf="!processing(); else working">
+        Pay ₱{{ q.total | number }}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ng-container>
+      <ng-template #working>Processing…</ng-template>
+    </button>
+  </div>
+</ion-content>
