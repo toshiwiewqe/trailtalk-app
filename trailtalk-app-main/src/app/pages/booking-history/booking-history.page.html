@@ -1,0 +1,167 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <h1 class="page-title">My Bookings</h1>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="page">
+    <ion-segment
+      mode="ios"
+      class="tabs"
+      [value]="tab()"
+      (ionChange)="onTabChange($event.detail.value)"
+    >
+      <ion-segment-button mode="ios" value="upcoming">
+        <ion-label>Upcoming</ion-label>
+      </ion-segment-button>
+      <ion-segment-button mode="ios" value="past">
+        <ion-label>Past</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    @for (b of visible(); track b.id) {
+      <article class="card">
+        <div class="card-top">
+          <div class="thumb">
+            @if (b.trailImage && !brokenImages().has(b.trailImage)) {
+              <img [src]="b.trailImage" [alt]="b.trailName" (error)="markBroken(b.trailImage)" />
+            } @else {
+              <ion-icon name="image-outline"></ion-icon>
+            }
+          </div>
+
+          <div class="info">
+            <span class="eyebrow">{{ isPast(b) ? 'Past climb' : 'Upcoming climb' }}</span>
+            <h2 class="trail">{{ b.trailName }}</h2>
+            <p class="when">
+              {{ toDate(b.date) | date: 'MMM d, y' }} &bull; {{ b.packageName }}
+            </p>
+          </div>
+
+          <span class="status" [attr.data-status]="isPast(b) ? 'completed' : 'confirmed'">
+            {{ isPast(b) ? 'Completed' : 'Confirmed' }}
+          </span>
+        </div>
+
+        <div class="card-bottom">
+          <div class="id-block">
+            <span class="eyebrow">Booking ID</span>
+            <span class="booking-id">#{{ b.reference }}</span>
+          </div>
+          <button type="button" class="details-btn" (click)="openDetails(b)">
+            Details <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <div class="empty">
+        <ion-icon name="ticket-outline"></ion-icon>
+        @if (tab() === 'upcoming') {
+          <h3>No upcoming climbs</h3>
+          <p>Pick a mountain and tap Book Now — your booking will show up here.</p>
+          <button type="button" class="cta" (click)="findTrail()">
+            <ion-icon name="compass-outline"></ion-icon> Find a trail
+          </button>
+        } @else {
+          <h3>No past climbs yet</h3>
+          <p>Hikes move here after their date has passed.</p>
+        }
+      </div>
+    }
+
+    @if (tab() === 'upcoming' && soonCount() > 0) {
+      <div class="hint" role="note">
+        <ion-icon name="warning"></ion-icon>
+        <span>
+          You have {{ soonCount() }} {{ soonCount() === 1 ? 'climb' : 'climbs' }} coming up in the
+          next 30 days. Stay hydrated!
+        </span>
+      </div>
+    }
+  </div>
+
+  <!-- Details sheet (receipt) -->
+  <ion-modal
+    class="details-sheet"
+    [isOpen]="detailsOpen()"
+    [initialBreakpoint]="0.75"
+    [breakpoints]="[0, 0.75, 1]"
+    (didDismiss)="closeDetails()"
+  >
+    <ng-template>
+      @if (selected(); as b) {
+        <ion-content>
+          <div class="sheet">
+            <div class="sheet-head">
+              <div class="thumb thumb--lg">
+                @if (b.trailImage && !brokenImages().has(b.trailImage)) {
+                  <img [src]="b.trailImage" [alt]="b.trailName" (error)="markBroken(b.trailImage)" />
+                } @else {
+                  <ion-icon name="image-outline"></ion-icon>
+                }
+              </div>
+              <div class="info">
+                <h2 class="trail">{{ b.trailName }}</h2>
+                <p class="where">#{{ b.reference }}</p>
+                <span class="status" [attr.data-status]="isPast(b) ? 'completed' : 'confirmed'">
+                  {{ isPast(b) ? 'Completed' : 'Confirmed' }}
+                </span>
+              </div>
+              <button type="button" class="close-btn" aria-label="Close" (click)="closeDetails()">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+            </div>
+
+            <dl class="rows">
+              <div class="row">
+                <dt><ion-icon name="calendar-outline"></ion-icon>Hike date</dt>
+                <dd>{{ toDate(b.date) | date: 'EEE, MMM d, y' }}</dd>
+              </div>
+              <div class="row">
+                <dt><ion-icon name="ticket-outline"></ion-icon>Package</dt>
+                <dd>{{ b.packageName }}</dd>
+              </div>
+              @if (b.activityNames.length) {
+                <div class="row">
+                  <dt><ion-icon name="sparkles-outline"></ion-icon>Activities</dt>
+                  <dd>{{ b.activityNames.join(', ') }}</dd>
+                </div>
+              }
+              @if (b.guideName) {
+                <div class="row">
+                  <dt><ion-icon name="person-outline"></ion-icon>Guide</dt>
+                  <dd>{{ b.guideName }}</dd>
+                </div>
+              }
+              @if (b.merch.length) {
+                <div class="row">
+                  <dt><ion-icon name="bag-handle-outline"></ion-icon>Merch</dt>
+                  <dd>
+                    @for (m of b.merch; track m.id) {
+                      <span class="line">{{ m.qty }}&times; {{ m.name }}</span>
+                    }
+                  </dd>
+                </div>
+              }
+              <div class="row">
+                <dt><ion-icon name="card-outline"></ion-icon>Payment</dt>
+                <dd>
+                  {{ b.paymentMethod }}@if (b.cardLast4) { &bull;&bull;&bull;&bull; {{ b.cardLast4 }} }
+                </dd>
+              </div>
+              <div class="row">
+                <dt><ion-icon name="receipt-outline"></ion-icon>Booked on</dt>
+                <dd>{{ b.createdAt | date: 'MMM d, y' }}</dd>
+              </div>
+              <div class="row row--total">
+                <dt>Total paid</dt>
+                <dd>&#8369;{{ b.total | number: '1.0-0' }}</dd>
+              </div>
+            </dl>
+          </div>
+        </ion-content>
+      }
+    </ng-template>
+  </ion-modal>
+</ion-content>
