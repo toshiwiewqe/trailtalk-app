@@ -1,7 +1,0 @@
-{
-  "name": "trailtalk",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
